@@ -36,7 +36,7 @@ jobs:
       - name: Copy dashboard to Pages folder
         run: |
           mkdir -p docs
-          cp -f agx_property_intel_dashboard.html docs/dashboard.html
+          cp -f lead_dashboard.html docs/dashboard.html
           cp -f index.html docs/index.html
 
       - name: Commit updated dashboard
