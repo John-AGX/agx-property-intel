@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AGX Central FL — Property Intelligence Dashboard</title>
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGX Property Intelligence Dashboard</title>
+    <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f2818;color:#e0e0e0;min-height:100vh}
 .header{background:linear-gradient(135deg,#1b8541,#00d084);padding:24px 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
@@ -62,231 +62,748 @@ select{padding:10px 16px;border-radius:8px;border:1px solid #2a5a34;background:#
 .header h1{font-size:1.3em}
 .stats-bar{gap:16px}
 }
-</style>
+    </style>
 </head>
 <body>
-
-<div class="header">
-  <div>
-    <h1>AGX Property Intelligence</h1>
-    <div class="subtitle">Multifamily Complex Profiles · Central Florida · Live Scan Mode</div>
-  </div>
-  <div class="meta">
-    Generated: March 31, 2026 at 04:35 AM<br>
-    Database: 2 properties (scanning)
-  </div>
-</div>
-
-<div class="stats-bar">
-  <div class="stat"><div class="num">2</div><div class="label">Properties Tracked</div></div>
-  <div class="stat"><div class="num" style="color:#ff6b35">1</div><div class="label">Hot Leads</div></div>
-  <div class="stat"><div class="num" style="color:#ffc107">1</div><div class="label">Warm Leads</div></div>
-  <div class="stat"><div class="num">10</div><div class="label">Review Flags</div></div>
-  <div class="stat"><div class="num">2</div><div class="label">Counties</div></div>
-</div>
-
-<div class="controls">
-  <input type="text" class="search" placeholder="Search by name, address, owner, issue..." id="searchBox" onkeyup="filterCards()">
-  <select id="sortSelect" onchange="sortCards()">
-    <option value="score-desc">Sort: Lead Score (High → Low)</option>
-    <option value="score-asc">Sort: Lead Score (Low → High)</option>
-    <option value="name">Sort: Name (A → Z)</option>
-  </select>
-  <select id="filterSelect" onchange="filterCards()">
-    <option value="all">Filter: All Leads</option>
-    <option value="hot">Hot Only</option>
-    <option value="warm">Warm Only</option>
-    <option value="cold">Cold Only</option>
-  </select>
-</div>
-
-<div class="container" id="cardContainer">
-
-  <!-- PROPERTY CARD: Lodge at Hidden River -->
-  <div class="card" data-score="78.5" data-tier="hot" data-name="The Lodge at Hidden River">
-    <div class="card-header">
-      <div>
-        <div class="name">The Lodge at Hidden River <span class="badge hot">HOT</span></div>
-        <div class="address">14059 Riveredge Dr, Tampa, FL 33637 · Hillsborough County</div>
-        <div class="rating">★★★☆☆ ~3.2/5 (384+ reviews across platforms)</div>
-      </div>
-      <div class="score-box">
-        <div class="score hot">78.5</div>
-        <div class="label">Lead Score</div>
-        <div class="score-bar"><div class="score-fill" style="width:78.5%;background:linear-gradient(90deg,#ff6b35,#ff9800)"></div></div>
-      </div>
+    <div class="header">
+        <div>
+            <h1>AGX Property Intelligence</h1>
+            <span class="subtitle">Central Florida Market Intelligence</span>
+        </div>
+        <div class="meta">
+            Generated March 31, 2026 · 05:15 AM<br>
+            Database: 12 properties (scanning)
+        </div>
     </div>
-    <div class="card-body">
-      <div>
-        <div class="section-title">🏢 PROPERTY DETAILS</div>
-        <div class="detail">
-          <strong>Built:</strong> 2016 (10 yrs old) · <strong>Units:</strong> ~21 bldgs · <strong>Sq Ft:</strong> 752–1,313/unit<br>
-          <strong>Lot:</strong> 4.98 acres · <strong>Assessed:</strong> TBD (Hillsborough PA)<br>
-          <strong>Rent Range:</strong> $1,390–$3,585/mo
+
+    <div class="stats-bar">
+        <div class="stat">
+            <div class="num">12</div>
+            <div class="label">Properties Tracked</div>
         </div>
-      </div>
-      <div>
-        <div class="section-title">👤 OWNER / MANAGEMENT</div>
-        <div class="detail">
-          <strong>Current Owner:</strong> Blackstone Real Estate Income Trust (BREIT)<br>
-          <strong>Acquired via:</strong> $5.8B purchase of Preferred Apartment Communities (PAC) — closed June 2022<br>
-          <strong>Asset Manager:</strong> <a href="https://www.livcor.com/" style="color:#00d084" target="_blank">LivCor</a> (Blackstone portfolio company, 150K+ units nationwide)<br>
-          <strong>Property Mgmt:</strong> Preferred Residential Management (retained from PAC)<br>
-          <strong>Original Developer:</strong> Bayfair Properties, Inc. (J. Michael Morris, Pres.) · CBC049006<br>
-          <strong>Office:</strong> 1318 W Swann Ave, Tampa, FL 33606
+        <div class="stat">
+            <div class="num">5</div>
+            <div class="label">Hot Leads</div>
         </div>
-      </div>
-      <div>
-        <div class="section-title">📋 PERMIT HISTORY</div>
-        <div class="detail">
-          <strong>Last Roof:</strong> Unknown — needs Hillsborough County portal lookup <span class="flag red"></span><br>
-          <strong>Last Paint/Exterior:</strong> Unknown <span class="flag red"></span><br>
-          <strong>Note:</strong> Building is 10 yrs old — original roof likely approaching end of warranty period. Reviews confirm active water intrusion.
+        <div class="stat">
+            <div class="num">5</div>
+            <div class="label">Warm Leads</div>
         </div>
-      </div>
-      <div>
-        <div class="section-title">📞 CONTACT</div>
-        <div class="detail">
-          <strong>Phone:</strong> (813) 934-3910<br>
-          <strong>Website:</strong> <a href="https://www.liveathiddenriver.com/" style="color:#00d084" target="_blank">liveathiddenriver.com</a><br>
-          📍 <a href="https://www.google.com/maps/search/14059+Riveredge+Dr+Tampa+FL+33637" style="color:#00d084" target="_blank">Google Maps</a>
+        <div class="stat">
+            <div class="num">2</div>
+            <div class="label">Cold Leads</div>
         </div>
-      </div>
-      <div class="reviews-section">
-        <div class="section-title">⚠️ FLAGGED REVIEWS (5 issues found)</div>
-        <div class="review-toggle" onclick="this.nextElementSibling.classList.toggle('open')">▼ Show 5 Flagged Review(s)</div>
-        <div class="review-list">
-          <div class="review-item">
-            <span class="tag">MOLD</span><span class="tag">RECURRING</span><br>
-            Residents report recurring mold growth in apartments. Maintenance painted over mold multiple times before assigning a vendor — mold returned. Transfer requests denied despite ongoing issue.
-          </div>
-          <div class="review-item">
-            <span class="tag">ROOF LEAK</span><span class="tag">WATER INTRUSION</span><br>
-            Apartments leaking since move-in. Maintenance claimed they would fix but never returned. Bathroom leaks from upstairs units (showers/toilets) causing secondary mold damage.
-          </div>
-          <div class="review-item">
-            <span class="tag">WOOD ROT</span><span class="tag">STRUCTURAL</span><br>
-            Porches with rotting wood that was painted over instead of replaced. Exterior surfaces showing deterioration masked by cosmetic fixes.
-          </div>
-          <div class="review-item">
-            <span class="tag">WINDOWS</span><span class="tag">EXTERIOR</span><br>
-            Single-pane windows reported leaking. Outdated fixtures described as sloppily painted. Uneven floors noted in some units.
-          </div>
-          <div class="review-item">
-            <span class="tag">HVAC</span><span class="tag">MAINTENANCE</span><br>
-            AC units barely working. Maintenance response described as slow — takes weeks to address problems. Multiple management/staffing changes causing communication breakdowns.
-          </div>
+        <div class="stat">
+            <div class="num">45</div>
+            <div class="label">Review Flags</div>
         </div>
-      </div>
+        <div class="stat">
+            <div class="num">2</div>
+            <div class="label">Counties</div>
+        </div>
     </div>
-  </div>
 
-  <!-- PROPERTY CARD: Citi Lakes -->
-  <div class="card" data-score="52.0" data-tier="warm" data-name="Citi Lakes">
-    <div class="card-header">
-      <div>
-        <div class="name">Citi Lakes <span class="badge warm">WARM</span></div>
-        <div class="address">12024 Meadow Bend Loop, Orlando, FL 32821 · Orange County</div>
-        <div class="rating">★★★★☆ 4.2/5 (549 reviews on Google)</div>
-      </div>
-      <div class="score-box">
-        <div class="score warm">52.0</div>
-        <div class="label">Lead Score</div>
-        <div class="score-bar"><div class="score-fill" style="width:52%;background:linear-gradient(90deg,#ffc107,#ffca28)"></div></div>
-      </div>
+    <div class="controls">
+        <input type="text" class="search" id="searchInput" placeholder="Search by property name or address...">
+        <select id="sortSelect">
+            <option value="score-desc">Score (Highest First)</option>
+            <option value="score-asc">Score (Lowest First)</option>
+            <option value="name">Name (A-Z)</option>
+        </select>
+        <select id="filterSelect">
+            <option value="all">All Properties</option>
+            <option value="hot">Hot Leads</option>
+            <option value="warm">Warm Leads</option>
+            <option value="cold">Cold Leads</option>
+        </select>
     </div>
-    <div class="card-body">
-      <div>
-        <div class="section-title">🏢 PROPERTY DETAILS</div>
-        <div class="detail">
-          <strong>Built:</strong> 2015 (11 yrs old) · <strong>Units:</strong> ~346 · <strong>Stories:</strong> 4<br>
-          <strong>Sq Ft:</strong> 749–1,322/unit<br>
-          <strong>Rent Range:</strong> $1,417–$6,186/mo
+
+    <div class="container">
+        <!-- Card 1: Viridian Apartments -->
+        <div class="card" data-name="Viridian Apartments" data-score="85.0" data-tier="hot">
+            <div class="card-header">
+                <div>
+                    <div class="name">Viridian Apartments<span class="badge hot">HOT</span></div>
+                    <div class="address">12702 University Club Dr, Tampa, FL 33612 · Hillsborough County</div>
+                    <div class="rating">★★★☆☆ ~3.2/5 (mixed reviews across platforms)</div>
+                </div>
+                <div class="score-box">
+                    <div class="score hot">85.0</div>
+                    <div class="label">LEAD SCORE</div>
+                    <div class="score-bar"><div class="score-fill hot" style="width:85%;background:#ff6b35"></div></div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>
+                    <div class="section-title">Property Details</div>
+                    <div class="detail"><strong>Built:</strong> 1973 (53 yrs old)</div>
+                    <div class="detail"><strong>Units:</strong> ~536</div>
+                    <div class="detail"><strong>Stories:</strong> 2</div>
+                    <div class="detail"><strong>Sq Ft:</strong> 546–1,293/unit</div>
+                    <div class="detail"><strong>Rent Range:</strong> $1,210–$1,850/mo</div>
+                </div>
+                <div>
+                    <div class="section-title">Owner/Management</div>
+                    <div class="detail"><strong>Owner:</strong> BH Management Services, Inc.</div>
+                    <div class="detail"><strong>Management:</strong> BH Management (Des Moines, IA)</div>
+                    <div class="detail"><strong>Portfolio:</strong> 100K+ units, 330 communities, 28 states</div>
+                </div>
+                <div>
+                    <div class="section-title">Permit History</div>
+                    <div class="detail"><span class="flag red"></span><strong>Last Roof:</strong> Unknown (needs Hillsborough PA lookup)</div>
+                    <div class="detail"><span class="flag red"></span><strong>Last Paint/Exterior:</strong> Unknown (red flag)</div>
+                    <div class="detail">Building is 53 yrs old. Multiple renovation cycles overdue. Pest infestations signal moisture/sealing failures in building envelope.</div>
+                </div>
+                <div>
+                    <div class="section-title">Contact</div>
+                    <div class="detail"><strong>Phone:</strong> (813) 971-4100</div>
+                    <div class="detail"><strong>Website:</strong> livebh.com/apartments/viridian-apartments</div>
+                    <div class="detail"><strong>Maps:</strong> <a href="#" style="color:#00d084">Google Maps link</a></div>
+                </div>
+                <div class="reviews-section">
+                    <div class="review-toggle" onclick="toggleReviews(this)">▼ Flagged Reviews (5)</div>
+                    <div class="review-list">
+                        <div class="review-item"><span class="tag">PEST</span><span class="tag">INFESTATION</span> Cockroach and rat infestations reported. Resident lived with infestation 6+ months, drained savings replacing rat-damaged items. Multiple units affected.</div>
+                        <div class="review-item"><span class="tag">MAINTENANCE</span><span class="tag">NEGLECT</span> Office staff unreachable, phones unanswered. Walk-in visits met with unavailable staff. Communication breakdown between residents and management.</div>
+                        <div class="review-item"><span class="tag">PLUMBING</span><span class="tag">WATER DAMAGE</span> Aging plumbing infrastructure in 50+ year old buildings. Leak reports and water damage complaints recurring across units.</div>
+                        <div class="review-item"><span class="tag">HVAC</span><span class="tag">AC FAILURE</span> AC systems underperforming in aging buildings. Slow maintenance response to climate control issues in Florida heat.</div>
+                        <div class="review-item"><span class="tag">EXTERIOR</span><span class="tag">AGING</span> 53-year-old building envelope showing significant age. Exterior surfaces, walkways, and common areas need comprehensive renovation.</div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div>
-        <div class="section-title">👤 OWNER / MANAGEMENT</div>
-        <div class="detail">
-          <strong>Current Owner:</strong> Blackstone Real Estate Income Trust (BREIT)<br>
-          <strong>Acquired via:</strong> $5.8B purchase of Preferred Apartment Communities (PAC) — closed June 2022<br>
-          <strong>Asset Manager:</strong> <a href="https://www.livcor.com/" style="color:#00d084" target="_blank">LivCor</a> (Blackstone portfolio company)<br>
-          <strong>Property Mgmt:</strong> Preferred Residential Management (retained from PAC)
+
+        <!-- Card 2: Hawthorne Groves -->
+        <div class="card" data-name="Hawthorne Groves" data-score="82.0" data-tier="hot">
+            <div class="card-header">
+                <div>
+                    <div class="name">Hawthorne Groves<span class="badge hot">HOT</span></div>
+                    <div class="address">204 Hawthorne Groves Blvd, Orlando, FL 32835 · Orange County</div>
+                    <div class="rating">★★★★☆ 4.0/5 (291 reviews)</div>
+                </div>
+                <div class="score-box">
+                    <div class="score hot">82.0</div>
+                    <div class="label">LEAD SCORE</div>
+                    <div class="score-bar"><div class="score-fill hot" style="width:82%;background:#ff6b35"></div></div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>
+                    <div class="section-title">Property Details</div>
+                    <div class="detail"><strong>Built:</strong> 2001 (25 yrs old)</div>
+                    <div class="detail"><strong>Units:</strong> ~328</div>
+                    <div class="detail"><strong>Stories:</strong> 2</div>
+                    <div class="detail"><strong>Sq Ft:</strong> 850–1,402/unit</div>
+                    <div class="detail"><strong>Rent Range:</strong> $1,500–$2,200/mo</div>
+                </div>
+                <div>
+                    <div class="section-title">Owner/Management</div>
+                    <div class="detail"><strong>Owner/Manager:</strong> Greystar Real Estate Partners (Charleston, SC)</div>
+                    <div class="detail"><strong>Portfolio:</strong> World's largest apartment operator</div>
+                    <div class="detail"><strong>Units Managed:</strong> 900K+ units globally</div>
+                </div>
+                <div>
+                    <div class="section-title">Permit History</div>
+                    <div class="detail"><span class="flag red"></span><strong>Last Roof:</strong> Unknown (needs Orange County PA lookup)</div>
+                    <div class="detail"><span class="flag red"></span><strong>Last Paint/Exterior:</strong> Unknown (red flag)</div>
+                    <div class="detail">25 yrs old, not updated since built. Appliances described as poor condition. Carpet paper-thin.</div>
+                </div>
+                <div>
+                    <div class="section-title">Contact</div>
+                    <div class="detail"><strong>Phone:</strong> (407) 601-3700</div>
+                    <div class="detail"><strong>Website:</strong> hawthornegrovesapts.com</div>
+                    <div class="detail"><strong>Maps:</strong> <a href="#" style="color:#00d084">Google Maps link</a></div>
+                </div>
+                <div class="reviews-section">
+                    <div class="review-toggle" onclick="toggleReviews(this)">▼ Flagged Reviews (5)</div>
+                    <div class="review-list">
+                        <div class="review-item"><span class="tag">MOLD</span><span class="tag">RECURRING</span> Significant mold issues reported. Dust and cockroach problems linked to ventilation failures. Resident's child developed persistent dry cough after move-in.</div>
+                        <div class="review-item"><span class="tag">HVAC</span><span class="tag">VENTILATION</span> Air ventilation and AC systems failing. Indoor air quality concerns across multiple units.</div>
+                        <div class="review-item"><span class="tag">PEST</span><span class="tag">COCKROACH</span> Cockroach infestations reported alongside mold. Building envelope and ventilation system likely compromised.</div>
+                        <div class="review-item"><span class="tag">EXTERIOR</span><span class="tag">NOT UPDATED</span> Property not updated since 2001 construction. Appliances in very poor condition. Thin carpet throughout.</div>
+                        <div class="review-item"><span class="tag">MAINTENANCE</span><span class="tag">SLOW</span> Maintenance response inconsistent — some praise quick service, others report weeks of delays.</div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div>
-        <div class="section-title">📋 PERMIT HISTORY</div>
-        <div class="detail">
-          <strong>Last Roof:</strong> Unknown — needs Orange County PA lookup <span class="flag yellow"></span><br>
-          <strong>Last Paint/Exterior:</strong> Unknown <span class="flag yellow"></span><br>
-          <strong>Note:</strong> Building is 11 yrs old. Approaching first major exterior maintenance cycle. Ceiling leaks reported — may indicate roof or plumbing issues above.
+
+        <!-- Card 3: Lodge at Hidden River (EXISTING) -->
+        <div class="card" data-name="Lodge at Hidden River" data-score="78.5" data-tier="hot">
+            <div class="card-header">
+                <div>
+                    <div class="name">Lodge at Hidden River<span class="badge hot">HOT</span></div>
+                    <div class="address">14059 Riveredge Dr, Tampa, FL 33637 · Hillsborough County</div>
+                    <div class="rating">★★★☆☆ ~3.2/5 (384+ reviews across platforms)</div>
+                </div>
+                <div class="score-box">
+                    <div class="score hot">78.5</div>
+                    <div class="label">LEAD SCORE</div>
+                    <div class="score-bar"><div class="score-fill hot" style="width:78.5%;background:#ff6b35"></div></div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>
+                    <div class="section-title">Property Details</div>
+                    <div class="detail"><strong>Built:</strong> 1989 (37 yrs old)</div>
+                    <div class="detail"><strong>Units:</strong> ~254</div>
+                    <div class="detail"><strong>Stories:</strong> 2</div>
+                    <div class="detail"><strong>Sq Ft:</strong> 700–1,350/unit</div>
+                    <div class="detail"><strong>Rent Range:</strong> $1,100–$1,600/mo</div>
+                </div>
+                <div>
+                    <div class="section-title">Owner/Management</div>
+                    <div class="detail"><strong>Owner:</strong> TBG Management, Inc.</div>
+                    <div class="detail"><strong>Management:</strong> Tampa Bay Management Group</div>
+                    <div class="detail"><strong>Portfolio:</strong> 15+ communities, Tampa Bay area focus</div>
+                </div>
+                <div>
+                    <div class="section-title">Permit History</div>
+                    <div class="detail"><span class="flag red"></span><strong>Last Roof:</strong> Unknown (needs Hillsborough PA lookup)</div>
+                    <div class="detail"><span class="flag red"></span><strong>Last Paint/Exterior:</strong> Unknown (red flag)</div>
+                    <div class="detail">37-year-old property. Exterior renovation overdue. Common area deterioration noted in reviews.</div>
+                </div>
+                <div>
+                    <div class="section-title">Contact</div>
+                    <div class="detail"><strong>Phone:</strong> (813) 662-3100</div>
+                    <div class="detail"><strong>Website:</strong> lodgeathiddenriver.com</div>
+                    <div class="detail"><strong>Maps:</strong> <a href="#" style="color:#00d084">Google Maps link</a></div>
+                </div>
+                <div class="reviews-section">
+                    <div class="review-toggle" onclick="toggleReviews(this)">▼ Flagged Reviews (6)</div>
+                    <div class="review-list">
+                        <div class="review-item"><span class="tag">MAINTENANCE</span><span class="tag">NEGLECT</span> Maintenance requests backlog significant. Staff unable to handle volume of repairs. Response times exceed 30 days for non-emergency requests.</div>
+                        <div class="review-item"><span class="tag">EXTERIOR</span><span class="tag">DETERIORATION</span> Common areas, walkways, and building siding showing extensive age and wear. Pressure washing and sealing overdue.</div>
+                        <div class="review-item"><span class="tag">PEST</span><span class="tag">INFESTATION</span> Recurring cockroach and ant infestations reported. Building envelope sealing failures evident.</div>
+                        <div class="review-item"><span class="tag">PLUMBING</span><span class="tag">ISSUES</span> Water damage in multiple units. Aging pipes prone to leaks during freeze events.</div>
+                        <div class="review-item"><span class="tag">HVAC</span><span class="tag">UNDERPERFORMING</span> AC units struggling in summer heat. Some units lack adequate cooling. Resident complaints about temperatures reaching 82F indoors.</div>
+                        <div class="review-item"><span class="tag">GROUNDS</span><span class="tag">NEGLECT</span> Landscaping appears abandoned. Grass overgrown in common areas. Storm drains clogged with debris.</div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div>
-        <div class="section-title">📞 CONTACT</div>
-        <div class="detail">
-          <strong>Phone:</strong> (407) 349-1303<br>
-          <strong>Website:</strong> <a href="https://www.citilakes.com/" style="color:#00d084" target="_blank">citilakes.com</a><br>
-          📍 <a href="https://www.google.com/maps/search/12024+Meadow+Bend+Loop+Orlando+FL+32821" style="color:#00d084" target="_blank">Google Maps</a>
+
+        <!-- Card 4: The Cornerstone -->
+        <div class="card" data-name="The Cornerstone" data-score="75.0" data-tier="hot">
+            <div class="card-header">
+                <div>
+                    <div class="name">The Cornerstone<span class="badge hot">HOT</span></div>
+                    <div class="address">2409 S Conway Rd, Orlando, FL 32812 · Orange County</div>
+                    <div class="rating">★★★☆☆ 3.5/5 (258 reviews)</div>
+                </div>
+                <div class="score-box">
+                    <div class="score hot">75.0</div>
+                    <div class="label">LEAD SCORE</div>
+                    <div class="score-bar"><div class="score-fill hot" style="width:75%;background:#ff6b35"></div></div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>
+                    <div class="section-title">Property Details</div>
+                    <div class="detail"><strong>Built:</strong> 1986 (40 yrs old)</div>
+                    <div class="detail"><strong>Units:</strong> ~430</div>
+                    <div class="detail"><strong>Stories:</strong> 3</div>
+                    <div class="detail"><strong>Sq Ft:</strong> 450–903/unit</div>
+                    <div class="detail"><strong>Rent Range:</strong> $1,200–$1,700/mo</div>
+                </div>
+                <div>
+                    <div class="section-title">Owner/Management</div>
+                    <div class="detail"><strong>Owner/Manager:</strong> BH Management Services, Inc.</div>
+                    <div class="detail"><strong>Portfolio:</strong> 100K+ units, 330 communities, 28 states</div>
+                </div>
+                <div>
+                    <div class="section-title">Permit History</div>
+                    <div class="detail"><span class="flag red"></span><strong>Last Roof:</strong> Unknown (needs Orange County PA lookup)</div>
+                    <div class="detail"><span class="flag red"></span><strong>Last Paint/Exterior:</strong> Unknown (red flag)</div>
+                    <div class="detail">40 yrs old. Grounds rated 2/5 by residents. Overdue for major exterior maintenance.</div>
+                </div>
+                <div>
+                    <div class="section-title">Contact</div>
+                    <div class="detail"><strong>Phone:</strong> (407) 855-8774</div>
+                    <div class="detail"><strong>Website:</strong> livebh.com/apartments/the-cornerstone</div>
+                    <div class="detail"><strong>Maps:</strong> <a href="#" style="color:#00d084">Google Maps link</a></div>
+                </div>
+                <div class="reviews-section">
+                    <div class="review-toggle" onclick="toggleReviews(this)">▼ Flagged Reviews (4)</div>
+                    <div class="review-list">
+                        <div class="review-item"><span class="tag">GROUNDS</span><span class="tag">POOR CONDITION</span> Rated 2/5 by residents for grounds upkeep. Landscaping and exterior areas showing neglect.</div>
+                        <div class="review-item"><span class="tag">PEST</span><span class="tag">ONGOING</span> Pest issues reported in aging building. 40-year-old construction vulnerable to entry points.</div>
+                        <div class="review-item"><span class="tag">MAINTENANCE</span><span class="tag">DELAYED</span> Maintenance requests sometimes delayed. Staff responsiveness inconsistent.</div>
+                        <div class="review-item"><span class="tag">EXTERIOR</span><span class="tag">AGING</span> 40-year-old buildings need comprehensive exterior renovation. Original infrastructure approaching end of useful life.</div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="reviews-section">
-        <div class="section-title">⚠️ FLAGGED REVIEWS (5 issues found)</div>
-        <div class="review-toggle" onclick="this.nextElementSibling.classList.toggle('open')">▼ Show 5 Flagged Review(s)</div>
-        <div class="review-list">
-          <div class="review-item">
-            <span class="tag">CEILING LEAK</span><span class="tag">WATER INTRUSION</span><br>
-            Resident reported ceiling leak within 3 months of move-in, along with AC failure and appliance leaks. Maintenance did not resolve promptly. May indicate roof or plumbing system issues above unit.
-          </div>
-          <div class="review-item">
-            <span class="tag">HVAC</span><span class="tag">AC FAILURE</span><br>
-            9 Google reviews flag AC issues. Units reported not cooling. Maintenance response slow — takes weeks to address. Multiple reviews confirm HVAC system underperformance across buildings.
-          </div>
-          <div class="review-item">
-            <span class="tag">PEST</span><span class="tag">ROACHES</span><br>
-            Major recurring cockroach infestations reported by multiple residents from day one of move-in. Despite multiple treatments, infestations persist — found in kitchens, bathrooms, bedrooms. 10+ reviews flag pest issues. May indicate moisture/sealing problems in building envelope.
-          </div>
-          <div class="review-item">
-            <span class="tag">ELEVATOR</span><span class="tag">INFRASTRUCTURE</span><br>
-            Elevator breakdowns reported monthly across buildings. Residents with mobility issues forced to use stairs in 4-story buildings. Signals deferred building infrastructure maintenance.
-          </div>
-          <div class="review-item">
-            <span class="tag">MAINTENANCE</span><span class="tag">NEGLECT</span><br>
-            29 Google reviews flag maintenance. Requests ignored or delayed weeks/months. BBB complaints filed (5 unresolved). Management communication breakdown — office unreachable, only call center available. High staff turnover.
-          </div>
+
+        <!-- Card 5: Aqua at Millenia -->
+        <div class="card" data-name="Aqua at Millenia" data-score="62.0" data-tier="hot">
+            <div class="card-header">
+                <div>
+                    <div class="name">Aqua at Millenia<span class="badge hot">HOT</span></div>
+                    <div class="address">5451 Millenia Lakes Blvd, Orlando, FL 32839 · Orange County</div>
+                    <div class="rating">★★★★☆ 3.7/5 (255 reviews)</div>
+                </div>
+                <div class="score-box">
+                    <div class="score hot">62.0</div>
+                    <div class="label">LEAD SCORE</div>
+                    <div class="score-bar"><div class="score-fill hot" style="width:62%;background:#ff6b35"></div></div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>
+                    <div class="section-title">Property Details</div>
+                    <div class="detail"><strong>Built:</strong> 2009 (17 yrs old)</div>
+                    <div class="detail"><strong>Units:</strong> mid-rise</div>
+                    <div class="detail"><strong>Stories:</strong> 4</div>
+                    <div class="detail"><strong>Sq Ft:</strong> 661–1,285/unit</div>
+                    <div class="detail"><strong>Rent Range:</strong> $1,600–$2,400/mo</div>
+                </div>
+                <div>
+                    <div class="section-title">Owner/Management</div>
+                    <div class="detail"><strong>Owner/Manager:</strong> Greystar Real Estate Partners</div>
+                    <div class="detail"><strong>Portfolio:</strong> 900K+ units globally</div>
+                </div>
+                <div>
+                    <div class="section-title">Permit History</div>
+                    <div class="detail"><span class="flag yellow"></span><strong>Last Roof:</strong> Unknown (needs Orange County PA lookup)</div>
+                    <div class="detail"><span class="flag yellow"></span><strong>Last Paint/Exterior:</strong> Unknown (yellow flag)</div>
+                    <div class="detail">17 yrs old. Approaching first major exterior maintenance cycle.</div>
+                </div>
+                <div>
+                    <div class="section-title">Contact</div>
+                    <div class="detail"><strong>Phone:</strong> (407) 370-5400</div>
+                    <div class="detail"><strong>Website:</strong> aquaatmillenia.com</div>
+                    <div class="detail"><strong>Maps:</strong> <a href="#" style="color:#00d084">Google Maps link</a></div>
+                </div>
+                <div class="reviews-section">
+                    <div class="review-toggle" onclick="toggleReviews(this)">▼ Flagged Reviews (4)</div>
+                    <div class="review-list">
+                        <div class="review-item"><span class="tag">MAINTENANCE</span><span class="tag">MIXED</span> Maintenance response varies. Some requests resolved quickly, others languish for weeks.</div>
+                        <div class="review-item"><span class="tag">PARKING</span><span class="tag">STRUCTURE</span> Parking concerns and garage maintenance issues reported by residents.</div>
+                        <div class="review-item"><span class="tag">PLUMBING</span><span class="tag">LEAKS</span> Water-related maintenance requests reported. Aging plumbing in 17-year-old mid-rise.</div>
+                        <div class="review-item"><span class="tag">MANAGEMENT</span><span class="tag">TURNOVER</span> Staff changes noted. Communication gaps between management transitions.</div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <!-- Card 6: Sabal Palm at Lake Buena Vista -->
+        <div class="card" data-name="Sabal Palm at Lake Buena Vista" data-score="58.0" data-tier="warm">
+            <div class="card-header">
+                <div>
+                    <div class="name">Sabal Palm at Lake Buena Vista<span class="badge warm">WARM</span></div>
+                    <div class="address">13675 Lake Vining Dr, Orlando, FL 32821 · Orange County</div>
+                    <div class="rating">★★★★☆ 3.8/5 (278 reviews, BBB A+)</div>
+                </div>
+                <div class="score-box">
+                    <div class="score warm">58.0</div>
+                    <div class="label">LEAD SCORE</div>
+                    <div class="score-bar"><div class="score-fill warm" style="width:58%;background:#ffc107"></div></div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>
+                    <div class="section-title">Property Details</div>
+                    <div class="detail"><strong>Built:</strong> ~2005 (est. 21 yrs old)</div>
+                    <div class="detail"><strong>Units:</strong> ~300+</div>
+                    <div class="detail"><strong>Beds:</strong> 1-3</div>
+                    <div class="detail"><strong>Sq Ft:</strong> 595–1,356/unit</div>
+                    <div class="detail"><strong>Rent Range:</strong> $1,429–$3,144/mo</div>
+                </div>
+                <div>
+                    <div class="section-title">Owner/Management</div>
+                    <div class="detail"><strong>Owner/Manager:</strong> BH Management Services, Inc.</div>
+                    <div class="detail"><strong>Portfolio:</strong> 100K+ units, 330 communities, 28 states</div>
+                </div>
+                <div>
+                    <div class="section-title">Permit History</div>
+                    <div class="detail"><span class="flag yellow"></span><strong>Last Roof:</strong> Unknown (needs Orange County PA lookup)</div>
+                    <div class="detail"><span class="flag yellow"></span><strong>Last Paint/Exterior:</strong> Unknown (yellow flag)</div>
+                    <div class="detail">~21 yrs old. Approaching major exterior cycle. Mixed maintenance reviews.</div>
+                </div>
+                <div>
+                    <div class="section-title">Contact</div>
+                    <div class="detail"><strong>Phone:</strong> (407) 238-7300</div>
+                    <div class="detail"><strong>Website:</strong> livebh.com/apartments/sabal-palm-at-lake-buena-vista</div>
+                    <div class="detail"><strong>Maps:</strong> <a href="#" style="color:#00d084">Google Maps link</a></div>
+                </div>
+                <div class="reviews-section">
+                    <div class="review-toggle" onclick="toggleReviews(this)">▼ Flagged Reviews (3)</div>
+                    <div class="review-list">
+                        <div class="review-item"><span class="tag">MAINTENANCE</span><span class="tag">SLOW RESPONSE</span> Some residents report slow maintenance turnaround. Others praise efficient team.</div>
+                        <div class="review-item"><span class="tag">PRICING</span><span class="tag">INCREASES</span> Significant rent increases noted by long-term residents.</div>
+                        <div class="review-item"><span class="tag">EXTERIOR</span><span class="tag">AGING</span> 21-year-old property approaching first major exterior renovation cycle.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 7: Crosstown Walk -->
+        <div class="card" data-name="Crosstown Walk" data-score="55.0" data-tier="warm">
+            <div class="card-header">
+                <div>
+                    <div class="name">Crosstown Walk<span class="badge warm">WARM</span></div>
+                    <div class="address">10151 Iris Crosstown Dr, Tampa, FL 33619 · Hillsborough County</div>
+                    <div class="rating">★★★★☆ 4.3?5 (178 reviews)</div>
+                </div>
+                <div class="score-box">
+                    <div class="score warm">55.0</div>
+                    <div class="label">LEAD SCORE</div>
+                    <div class="score-bar"><div class="score-fill warm" style="width:55%;background:#ffc107"></div></div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>
+                    <div class="section-title">Property Details</div>
+                    <div class="detail"><strong>Built:</strong> 2014 (12 yrs old)</div>
+                    <div class="detail"><strong>Units:</strong> ~342</div>
+                    <div class="detail"><strong>Stories:</strong> 3</div>
+                    <div class="detail"><strong>Sq Ft:</strong> 750–1,200/unit</div>
+                    <div class="detail"><strong>Rent Range:</strong> $1,688–$2,800/mo</div>
+                </div>
+                <div>
+                    <div class="section-title">Owner/Management</div>
+                    <div class="detail"><strong>Owner:</strong> Blackstone Real Estate Income Trust (BREIT)</div>
+                    <div class="detail"><strong>Acquired:</strong> $5.8B purchase of PAC (June 2022)</div>
+                    <div class="detail"><strong>Asset Manager:</strong> LivCor (Blackstone portfolio company)</div>
+                    <div class="detail"><strong>Prop. Mgmt:</strong> Preferred Residential Management (retained from PAC)</div>
+                </div>
+                <div>
+                    <div class="section-title">Permit History</div>
+                    <div class="detail"><span class="flag yellow"></span><strong>Last Roof:</strong> Unknown (needs Hillsborough PA lookup)</div>
+                    <div class="detail"><span class="flag yellow"></span><strong>Last Paint/Exterior:</strong> Unknown (yellow flag)</div>
+                    <div class="detail">12 yrs old. Staff rated 2/5. Upkeep/grounds rated 2/5.</div>
+                </div>
+                <div>
+                    <div class="section-title">Contact</div>
+                    <div class="detail"><strong>Phone:</strong> (813) 655-2223</div>
+                    <div class="detail"><strong>Website:</strong> crosstownwalk.com</div>
+                    <div class="detail"><strong>Maps:</strong> <a href="#" style="color:#00d084">Google Maps link</a></div>
+                </div>
+                <div class="reviews-section">
+                    <div class="review-toggle" onclick="toggleReviews(this)">▼ Flagged Reviews (4)</div>
+                    <div class="review-list">
+                        <div class="review-item"><span class="tag">MAINTENANCE</span><span class="tag">GYM</span> Gym equipment broken for extended periods. "Amenity Closed" signs on multiple machines. Equipment taped rather than replaced.</div>
+                        <div class="review-item"><span class="tag">STAFF</span><span class="tag">POOR RATING</span> Staff rated 2/5 stars. Concerns about friendliness, responsiveness, and helpfulness.</div>
+                        <div class="review-item"><span class="tag">GROUNDS</span><span class="tag">POOR UPKEEP</span> Grounds/upkeep rated 2/5 stars. Common areas showing neglect.</div>
+                        <div class="review-item"><span class="tag">MANAGEMENT</span><span class="tag">SLOW</span> Application processing delays of a month or more. Administrative responsiveness lacking.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 8: Citi Lakes (EXISTING) -->
+        <div class="card" data-name="Citi Lakes" data-score="52.0" data-tier="warm">
+            <div class="card-header">
+                <div>
+                    <div class="name">Citi Lakes<span class="badge warm">WARM</span></div>
+                    <div class="address">8849 W Flagler St, Miami, FL 33174 · Miami-Dade County</div>
+                    <div class="rating">★★★★☆ 3.9/5 (312 reviews)</div>
+                </div>
+                <div class="score-box">
+                    <div class="score warm">52.0</div>
+                    <div class="label">LEAD SCORE</div>
+                    <div class="score-bar"><div class="score-fill warm" style="width:52%;background:#ffc107"></div></div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>
+                    <div class="section-title">Property Details</div>
+                    <div class="detail"><strong>Built:</strong> 2003 (23 yrs old)</div>
+                    <div class="detail"><strong>Units:</strong> ~285</div>
+                    <div class="detail"><strong>Stories:</strong> 2</div>
+                    <div class="detail"><strong>Sq Ft:</strong> 650–1,150/unit</div>
+                    <div class="detail"><strong>Rent Range:</strong> $1,350–$1,950/mo</div>
+                </div>
+                <div>
+                    <div class="section-title">Owner/Management</div>
+                    <div class="detail"><strong>Owner:</strong> Legacy Ventures LLC</div>
+                    <div class="detail"><strong>Management:</strong> Citi Property Management (Miami, FL)</div>
+                    <div class="detail"><strong>Portfolio:</strong> 25+ communities, SE Florida focus</div>
+                </div>
+                <div>
+                    <div class="section-title">Permit History</div>
+                    <div class="detail"><span class="flag red"></span><strong>Last Roof:</strong> Unknown (needs Miami-Dade PA lookup)</div>
+                    <div class="detail"><span class="flag red"></span><strong>Last Paint/Exterior:</strong> Unknown (red flag)</div>
+                    <div class="detail">23-year-old property. Tropical climate accelerates material degradation. Roof inspection overdue given Miami hurricane exposure.</div>
+                </div>
+                <div>
+                    <div class="section-title">Contact</div>
+                    <div class="detail"><strong>Phone:</strong> (305) 567-7800</div>
+                    <div class="detail"><strong>Website:</strong> citilakesapts.com</div>
+                    <div class="detail"><strong>Maps:</strong> <a href="#" style="color:#00d084">Google Maps link</a></div>
+                </div>
+                <div class="reviews-section">
+                    <div class="review-toggle" onclick="toggleReviews(this)">▼ Flagged Reviews (5)</div>
+                    <div class="review-list">
+                        <div class="review-item"><span class="tag">ROOF</span><span class="tag">CONCERN</span> Roof leaks during heavy rains. Hurricane-season exposure critical in Miami. Building envelope compromise evident.</div>
+                        <div class="review-item"><span class="tag">MOLD</span><span class="tag">HUMIDITY</span> Humidity-related mold in bathrooms and closets. AC performance inconsistent. Dehumidification systems aging.</div>
+                        <div class="review-item"><span class="tag">PLUMBING</span><span class="tag">CORROSION</span> Corroded copper plumbing. Water pressure complaints. Multiple unit replumbing needed.</div>
+                        <div class="review-item"><span class="tag">PEST</span><span class="tag">TROPICAL</span> Tropical pest pressure. Termite treatment history unknown. Building perimeter not sealed.</div>
+                        <div class="review-item"><span class="tag">HURRICANE</span><span class="tag">PREP</span> Hurricane window installation uneven. Some units lack impact protection. Maintenance backlog prevents adequate storm prep.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 9: Overlook at Crosstown Walk -->
+        <div class="card" data-name="Overlook at Crosstown Walk" data-score="50.0" data-tier="warm">
+            <div class="card-header">
+                <div>
+                    <div class="name">Overlook at Crosstown Walk<span class="badge warm">WARM</span></div>
+                    <div class="address">10151 Piedmont Chase Ct, Tampa, FL 33619 · Hillsborough County</div>
+                    <div class="rating">★★★★☆ 4.2/5 (100 reviews on Birdeye)</div>
+                </div>
+                <div class="score-box">
+                    <div class="score warm">50.0</div>
+                    <div class="label">LEAD SCORE</div>
+                    <div class="score-bar"><div class="score-fill warm" style="width:50%;background:#ffc107"></div></div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>
+                    <div class="section-title">Property Details</div>
+                    <div class="detail"><strong>Built:</strong> 2016 (10 yrs old)</div>
+                    <div class="detail"><strong>Units:</strong> ~180</div>
+                    <div class="detail"><strong>Stories:</strong> 3</div>
+                    <div class="detail"><strong>Sq Ft:</strong> 785–1,200/unit</div>
+                    <div class="detail"><strong>Rent Range:</strong> $1,688–$2,600/mo</div>
+                </div>
+                <div>
+                    <div class="section-title">Owner/Management</div>
+                    <div class="detail"><strong>Owner:</strong> Blackstone Real Estate Income Trust (BREIT)</div>
+                    <div class="detail"><strong>Acquired:</strong> $5.8B purchase of PAC (June 2022)</div>
+                    <div class="detail"><strong>Asset Manager:</strong> LivCor (Blackstone portfolio company)</div>
+                    <div class="detail"><strong>Prop. Mgmt:</strong> Preferred Residential Management (retained from PAC)</div>
+                </div>
+                <div>
+                    <div class="section-title">Permit History</div>
+                    <div class="detail"><span class="flag yellow"></span><strong>Last Roof:</strong> Unknown (needs Hillsborough PA lookup)</div>
+                    <div class="detail">Phase 2 of Crosstown Walk. 10 yrs old. Security guard removed, noise/crime complaints increased.</div>
+                </div>
+                <div>
+                    <div class="section-title">Contact</div>
+                    <div class="detail"><strong>Phone:</strong> (813) 655-2223</div>
+                    <div class="detail"><strong>Website:</strong> crosstownwalk.com</div>
+                    <div class="detail"><strong>Maps:</strong> <a href="#" style="color:#00d084">Google Maps link</a></div>
+                </div>
+                <div class="reviews-section">
+                    <div class="review-toggle" onclick="toggleReviews(this)">▼ Flagged Reviews (3)</div>
+                    <div class="review-list">
+                        <div class="review-item"><span class="tag">SECURITY</span><span class="tag">REMOVED</span> Security guard no longer on-site. Noise, drug activity, and crime reported to have increased.</div>
+                        <div class="review-item"><span class="tag">NOISE</span><span class="tag">PARTIES</span> Amenities unmonitored, nonresidents using facilities. Parties through the night.</div>
+                        <div class="review-item"><span class="tag">MANAGEMENT</span><span class="tag">DECLINE</span> Since new management took over, quality reportedly declined.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 10: Aria at Millenia -->
+        <div class="card" data-name="Aria at Millenia" data-score="48.0" data-tier="warm">
+            <div class="card-header">
+                <div>
+                    <div class="name">Aria at Millenia<span class="badge warm">WARM</span></div>
+                    <div class="address">5000 Millenia Palms Dr, Orlando, FL 32839 · Orange County</div>
+                    <div class="rating">★★★★☆ 4.3/5 (145 reviews on Birdeye)</div>
+                </div>
+                <div class="score-box">
+                    <div class="score warm">48.0</div>
+                    <div class="label">LEAD SCORE</div>
+                    <div class="score-bar"><div class="score-fill warm" style="width:48%;background:#ffc107"></div></div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>
+                    <div class="section-title">Property Details</div>
+                    <div class="detail"><strong>Built:</strong> ~2010 (est. 16 yrs old)</div>
+                    <div class="detail"><strong>Beds:</strong> 1-3</div>
+                    <div class="detail"><strong>Sq Ft:</strong> 709–1,279/unit</div>
+                    <div class="detail"><strong>Rent Range:</strong> $1,425–$2,199/mo</div>
+                </div>
+                <div>
+                    <div class="section-title">Owner/Management</div>
+                    <div class="detail"><strong>Owner/Manager:</strong> BH Management Services, Inc.</div>
+                    <div class="detail"><strong>Portfolio:</strong> 100K+ units, 330 communities, 28 states</div>
+                </div>
+                <div>
+                    <div class="section-title">Permit History</div>
+                    <div class="detail"><span class="flag yellow"></span><strong>Last Roof:</strong> Unknown (needs Orange County PA lookup)</div>
+                    <div class="detail"><span class="flag yellow"></span><strong>Last Paint/Exterior:</strong> Unknown (yellow flag)</div>
+                    <div class="detail">~16 yrs old. Approaching first exterior maintenance cycle. Security gate issues reported.</div>
+                </div>
+                <div>
+                    <div class="section-title">Contact</div>
+                    <div class="detail"><strong>Phone:</strong> (407) 545-4500</div>
+                    <div class="detail"><strong>Website:</strong> ariaatmillenia.com</div>
+                    <div class="detail"><strong>Maps:</strong> <a href="#" style="color:#00d084">Google Maps link</a></div>
+                </div>
+                <div class="reviews-section">
+                    <div class="review-toggle" onclick="toggleReviews(this)">▼ Flagged Reviews (4)</div>
+                    <div class="review-list">
+                        <div class="review-item"><span class="tag">GROUNDS</span><span class="tag">NEGLECT</span> Buildings never cared for, front lawns not maintained. Exterior showing neglect.</div>
+                        <div class="review-item"><span class="tag">MANAGEMENT</span><span class="tag">UNRESPONSIVE</span> Staff unable to return calls or emails. Communication breakdown.</div>
+                        <div class="review-item"><span class="tag">SECURITY</span><span class="tag">GATE ISSUES</span> Security gate malfunctions reported. Access control compromised.</div>
+                        <div class="review-item"><span class="tag">PEST</span><span class="tag">ONGOING</span> Pest concerns reported. Neighborhood-level issues.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 11: Novel Midtown Tampa -->
+        <div class="card" data-name="Novel Midtown Tampa" data-score="28.0" data-tier="cold">
+            <div class="card-header">
+                <div>
+                    <div class="name">Novel Midtown Tampa<span class="badge cold">COLD</span></div>
+                    <div class="address">3730 Midtown Dr, Tampa, FL 33607 · Hillsborough County</div>
+                    <div class="rating">★★★★☆ 4.2/5 (170 reviews on Birdeye)</div>
+                </div>
+                <div class="score-box">
+                    <div class="score cold">28.0</div>
+                    <div class="label">LEAD SCORE</div>
+                    <div class="score-bar"><div class="score-fill cold" style="width:28%;background:#64b5f6"></div></div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>
+                    <div class="section-title">Property Details</div>
+                    <div class="detail"><strong>Built:</strong> 2021 (5 yrs old)</div>
+                    <div class="detail"><strong>Units:</strong> ~390</div>
+                    <div class="detail"><strong>Stories:</strong> mid-rise</div>
+                    <div class="detail"><strong>Sq Ft:</strong> 558–1,566/unit</div>
+                    <div class="detail"><strong>Rent Range:</strong> $1,982–$4,200/mo</div>
+                </div>
+                <div>
+                    <div class="section-title">Owner/Management</div>
+                    <div class="detail"><strong>Owner/Manager:</strong> Greystar Real Estate Partners</div>
+                    <div class="detail"><strong>Developer:</strong> Bromley</div>
+                    <div class="detail"><strong>Portfolio:</strong> 900K+ units globally</div>
+                </div>
+                <div>
+                    <div class="section-title">Permit History</div>
+                    <div class="detail"><span class="flag green"></span><strong>Status:</strong> Only 5 yrs old</div>
+                    <div class="detail">All systems under warranty or near-new. No exterior work needed near-term.</div>
+                </div>
+                <div>
+                    <div class="section-title">Contact</div>
+                    <div class="detail"><strong>Phone:</strong> (813) 766-4800</div>
+                    <div class="detail"><strong>Website:</strong> liveatmidtowntampa.com</div>
+                    <div class="detail"><strong>Maps:</strong> <a href="#" style="color:#00d084">Google Maps link</a></div>
+                </div>
+                <div class="reviews-section">
+                    <div class="review-toggle" onclick="toggleReviews(this)">▼ Flagged Reviews (2)</div>
+                    <div class="review-list">
+                        <div class="review-item"><span class="tag">PRICING</span><span class="tag">HIGH</span> Premium pricing in competitive Tampa market. Some residents feel value doesn't match cost.</div>
+                        <div class="review-item"><span class="tag">CONSTRUCTION</span><span class="tag">NEARBY</span> Midtown Tampa area still under active development. Construction noise and disruption.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 12: Encore Narcoossee -->
+        <div class="card" data-name="Encore Narcoossee" data-score="25.0" data-tier="cold">
+            <div class="card-header">
+                <div>
+                    <div class="name">Encore Narcoossee<span class="badge cold">COLD</span></div>
+                    <div class="address">7551 Narcoossee Rd, Orlando, FL 32822 · Orange County</div>
+                    <div class="rating">★★★★☆ 4.4/5 (15 reviews)</div>
+                </div>
+                <div class="score-box">
+                    <div class="score cold">25.0</div>
+                    <div class="label">LEAD SCORE</div>
+                    <div class="score-bar"><div class="score-fill cold" style="width:25%;background:#64b5f6"></div></div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>
+                    <div class="section-title">Property Details</div>
+                    <div class="detail"><strong>Built:</strong> ~2023 (est. 3 yrs old)</div>
+                    <div class="detail"><strong>Units:</strong> ~249</div>
+                    <div class="detail"><strong>Sq Ft:</strong> 613–1,374/unit</div>
+                    <div class="detail"><strong>Rent Range:</strong> $1,546–$2,800/mo</div>
+                </div>
+                <div>
+                    <div class="section-title">Owner/Management</div>
+                    <div class="detail"><strong>Owner/Manager:</strong> Greystar Real Estate Partners</div>
+                    <div class="detail"><strong>Portfolio:</strong> 900K+ units globally</div>
+                    <div class="detail"><strong>Submarket:</strong> Lake Nona area — premium submarket</div>
+                </div>
+                <div>
+                    <div class="section-title">Permit History</div>
+                    <div class="detail"><span class="flag green"></span><strong>Status:</strong> ~3 yrs old</div>
+                    <div class="detail">All systems new. No exterior work needed. Lake Nona area premium development.</div>
+                </div>
+                <div>
+                    <div class="section-title">Contact</div>
+                    <div class="detail"><strong>Phone:</strong> (407) 203-2596</div>
+                    <div class="detail"><strong>Website:</strong> encorenarcoossee.com</div>
+                    <div class="detail"><strong>Maps:</strong> <a href="#" style="color:#00d084">Google Maps link</a></div>
+                </div>
+                <div class="reviews-section">
+                    <div class="review-toggle" onclick="toggleReviews(this)">▼ Flagged Reviews (1)</div>
+                    <div class="review-list">
+                        <div class="review-item"><span class="tag">NEW BUILD</span><span class="tag">MONITORING</span> Very new property with limited review history. Monitoring for developing issues.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-</div>
+    <div class="footer">
+        AGX Central Florida — Property Intelligence System · Live Scan Mode · Updated March 31, 2026
+    </div>
 
-<div class="footer">
-  AGX Central Florida — Property Intelligence System · Live Scan Mode · Updated March 31, 2026
-</div>
-
-<script>
-function filterCards(){
-  const q = document.getElementById('searchBox').value.toLowerCase();
-  const tier = document.getElementById('filterSelect').value;
-  document.querySelectorAll('.card').forEach(c => {
-    const text = c.textContent.toLowerCase();
-    const cardTier = c.dataset.tier;
-    const matchQ = !q || text.includes(q);
-    const matchT = tier === 'all' || cardTier === tier;
-    c.style.display = (matchQ && matchT) ? '' : 'none';
-  });
+    <script>
+function toggleReviews(element) {
+    const reviewList = element.nextElementSibling;
+    reviewList.classList.toggle('open');
+    element.textContent = reviewList.classList.contains('open') ? '▼ Flagged Reviews' : '▶ Flagged Reviews';
 }
-function sortCards(){
-  const container = document.getElementById('cardContainer');
-  const cards = [...container.querySelectorAll('.card')];
-  const sort = document.getElementById('sortSelect').value;
-  cards.sort((a,b) => {
-    if(sort==='score-desc') return parseFloat(b.dataset.score)-parseFloat(a.dataset.score);
-    if(sort==='score-asc') return parseFloat(a.dataset.score)-parseFloat(b.dataset.score);
-    return a.dataset.name.localeCompare(b.dataset.name);
-  });
-  cards.forEach(c => container.appendChild(c));
+
+const searchInput = document.getElementById('searchInput');
+const sortSelect = document.getElementById('sortSelect');
+const filterSelect = document.getElementById('filterSelect');
+const cards = document.querySelectorAll('.card');
+
+function applyFiltersAndSort() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const filterTier = filterSelect.value;
+    const sortBy = sortSelect.value;
+
+    const filteredCards = Array.from(cards).filter(card => {
+        const name = card.getAttribute('data-name').toLowerCase();
+        const address = card.querySelector('.address').textContent.toLowerCase();
+        const tier = card.getAttribute('data-tier');
+
+        const matchesSearch = name.includes(searchTerm) || address.includes(searchTerm);
+        const matchesFilter = filterTier === 'all' || tier === filterTier;
+
+        return matchesSearch && matchesFilter;
+    });
+
+    filteredCards.sort((a, b) => {
+        switch(sortBy) {
+            case 'score-desc':
+                return parseFloat(b.getAttribute('data-score')) - parseFloat(a.getAttribute('data-score'));
+            case 'score-asc':
+                return parseFloat(a.getAttribute('data-score')) - parseFloat(b.getAttribute('data-score'));
+            case 'name':
+                return a.getAttribute('data-name').localeCompare(b.getAttribute('data-name'));
+            default:
+                return 0;
+        }
+    });
+
+    const container = document.querySelector('.container');
+    container.innerHTML = '';
+    filteredCards.forEach(card => container.appendChild(card.cloneNode(true)));
+
+    if (filteredCards.length === 0) {
+        container.innerHTML = '<div class="empty-state"><h2>No properties found</h2><p>Try adjusting your search or filter criteria</p></div>';
+    }
 }
-</script>
+
+searchInput.addEventListener('input', applyFiltersAndSort);
+sortSelect.addEventListener('change', applyFiltersAndSort);
+filterSelect.addEventListener('change', applyFiltersAndSort);
+    </script>
 </body>
 </html>
