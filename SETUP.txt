@@ -1,0 +1,122 @@
+AGX Central FL — Property Intelligence System
+==============================================
+
+QUICK START (Demo Mode)
+-----------------------
+  cd agx-property-intel
+  python run.py --demo
+
+Opens lead_dashboard.html in your browser to see 8 sample properties
+across all 7 Central FL counties with full profiles.
+
+
+FULL SYSTEM MODES
+-----------------
+
+  python run.py --demo                    Demo dashboard (no API needed)
+  python run.py --full --key YOUR_KEY     Full scan (all 6 modules)
+  python run.py --discover --key KEY      Google Places discovery + reviews
+  python run.py --permits                 County permit scan (needs Selenium)
+  python run.py --appraiser               Property appraiser scan (needs Selenium)
+  python run.py --sunbiz                  FL Sunbiz corporate lookup (needs Selenium)
+  python run.py --score                   Re-score all properties
+  python run.py --dashboard               Regenerate dashboard from existing data
+
+
+WHAT EACH MODULE DOES
+---------------------
+
+Module 1 — DISCOVERY (Google Places API)
+  Finds large multifamily apartment complexes across 7 counties.
+  Needs: Google Places API key ($200/mo free credit).
+
+Module 2 — REVIEW ANALYSIS
+  Scans Google Reviews for exterior/structural issues.
+  Runs automatically after discovery. No extra setup.
+
+Module 3 — PERMIT HISTORY (Selenium OR Shovels.ai API)
+  Scrapes county building permit databases for roof, paint, structural
+  permits. Flags properties overdue for work.
+  FREE MODE: Uses Selenium to automate county portals.
+  PAID MODE: Set SHOVELS_API_KEY env variable for Shovels.ai API.
+
+Module 4 — PROPERTY APPRAISER (Selenium)
+  Scrapes county property appraiser sites for owner name, year built,
+  unit count, assessed value, parcel ID.
+  Needs: Selenium + ChromeDriver.
+
+Module 5 — SUNBIZ CORPORATE LOOKUP (Selenium)
+  Searches Florida Division of Corporations for management company
+  details, registered agent, officers.
+  Needs: Selenium + ChromeDriver.
+
+Module 6 — LEAD SCORING
+  Scores 0-100 based on: review issues (40pts), permit age (30pts),
+  building age (10pts), property size (10pts), reachability (10pts).
+  Assigns priority: HOT (60+), WARM (35+), COLD (<35).
+
+
+SETUP — GOOGLE PLACES API KEY
+------------------------------
+1. Go to https://console.cloud.google.com/
+2. Create or select a project
+3. Enable "Places API"
+4. Credentials → Create Credentials → API Key
+5. Run: python run.py --discover --key YOUR_KEY
+
+
+SETUP — SELENIUM (for free permit/appraiser/sunbiz scraping)
+------------------------------------------------------------
+1. Install Selenium: pip install selenium
+2. Download ChromeDriver matching your Chrome version:
+   https://chromedriver.chromium.org/downloads
+   (or: https://googlechromelabs.github.io/chrome-for-testing/)
+3. Put chromedriver in your PATH or same folder as the script
+4. Run: python run.py --permits
+
+
+SETUP — SHOVELS.AI (paid upgrade for permits)
+----------------------------------------------
+If free county scraping isn't reliable enough or you want to scale:
+1. Sign up at https://www.shovels.ai/
+2. Get your API key
+3. Set: export SHOVELS_API_KEY=your_key_here  (Mac/Linux)
+         set SHOVELS_API_KEY=your_key_here     (Windows)
+4. Run: python run.py --permits
+   (It will auto-detect the API key and use it instead of Selenium)
+
+
+DATA STORAGE
+------------
+All data is stored in data/properties.json. This file persists
+between runs and grows over time. Each run adds new properties and
+updates existing ones — it never deletes data.
+
+The lead_dashboard.html file is regenerated fresh each time you run
+--dashboard or --demo.
+
+
+LEAD SCORE BREAKDOWN
+--------------------
+Each property is scored on 5 dimensions:
+
+  Reviews (0-40pts)     Red bar     Tenant complaints about exterior/structural
+  Permits (0-30pts)     Orange bar  How overdue for roof/paint/structural work
+  Building Age (0-10)   Purple bar  Older buildings need more maintenance
+  Property Size (0-10)  Blue bar    Larger properties = bigger potential jobs
+  Reachability (0-10)   Green bar   Do we have phone, website, owner, agent info
+
+Score thresholds:
+  60+ = HOT (🔥)    Go after these immediately
+  35+ = WARM (🟡)   Worth a call / drive-by
+  <35 = COLD (🔵)   Monitor for changes
+
+
+CUSTOMIZATION
+-------------
+Edit config.py to:
+  - Add/remove search areas and counties
+  - Change minimum review thresholds
+  - Adjust permit age alerts (default: roof 15yr, paint 8yr)
+  - Modify keyword lists for review analysis
+  - Add new permit categories
