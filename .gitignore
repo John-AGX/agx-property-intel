@@ -1,0 +1,31 @@
+# Data files (contain scraped property data — don't commit)
+data/properties.json
+
+# Generated dashboard
+lead_dashboard.html
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environment
+venv/
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Selenium
+chromedriver
+chromedriver.exe
