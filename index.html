@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGX Property Intelligence</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f2818;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header {
+            background: linear-gradient(135deg, #1b8541, #00d084);
+            width: 100%;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .header h1 {
+            font-size: 2.5em;
+            color: white;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .header p {
+            color: rgba(255,255,255,0.85);
+            font-size: 1.1em;
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            padding: 40px 20px;
+        }
+        .card {
+            background: #1a3a24;
+            border: 1px solid #2a5a34;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 24px;
+            transition: transform 0.2s;
+        }
+        .card:hover { transform: translateY(-2px); }
+        .card h2 {
+            color: #00d084;
+            margin-bottom: 12px;
+            font-size: 1.4em;
+        }
+        .card p {
+            line-height: 1.6;
+            color: #b0c8b8;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #1b8541, #00d084);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-top: 16px;
+            transition: opacity 0.2s;
+        }
+        .btn:hover { opacity: 0.9; }
+        .status {
+            display: inline-block;
+            background: #2a5a34;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            color: #00d084;
+            margin-top: 8px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+        .stat-box {
+            background: #0f2818;
+            border: 1px solid #2a5a34;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-box .number {
+            font-size: 2em;
+            color: #00d084;
+            font-weight: 700;
+        }
+        .stat-box .label {
+            color: #8aaa94;
+            font-size: 0.9em;
+            margin-top: 4px;
+        }
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #5a7a64;
+            font-size: 0.85em;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>AGX Property Intelligence</h1>
+        <p>Central Florida Multifamily Apartment Lead Generation</p>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2>Lead Dashboard</h2>
+            <p>View scored property leads across 7 Central Florida counties. The dashboard shows Google review analysis, permit activity, building age, ownership intel, and overall opportunity scores.</p>
+            <br>
+            <a href="dashboard.html" class="btn">Open Dashboard</a>
+            <br><br>
+            <span class="status" id="lastUpdate">Waiting for first scan...</span>
+        </div>
+
+        <div class="card">
+            <h2>Coverage Area</h2>
+            <p>Scanning multifamily apartment complexes across Central Florida for exterior and structural maintenance opportunities.</p>
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="number">7</div>
+                    <div class="label">Counties</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">18</div>
+                    <div class="label">Search Areas</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">5</div>
+                    <div class="label">Intel Dimensions</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">Auto</div>
+                    <div class="label">Weekly Scans</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>How It Works</h2>
+            <p>Every Monday at 6 AM Eastern, the system automatically discovers apartment complexes via Google Places, analyzes their reviews for maintenance complaints, checks county permit databases, looks up property appraiser records for building age, and cross-references Florida Sunbiz for corporate ownership. Each property gets a 0-100 opportunity score.</p>
+        </div>
+
+        <div class="card">
+            <h2>Run a Scan Now</h2>
+            <p>Don't want to wait for the weekly scan? You can trigger one manually anytime from the GitHub Actions tab.</p>
+            <br>
+            <a href="https://github.com/John-AGX/agx-property-intel/actions" class="btn">Go to Actions</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        AGX Central Florida &mdash; Property Intelligence System
+    </div>
+</body>
+</html>
