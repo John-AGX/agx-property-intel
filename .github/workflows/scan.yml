@@ -1,0 +1,48 @@
+name: AGX Property Intel Scan
+
+on:
+  schedule:
+    # Runs every Monday at 6 AM Eastern (10 AM UTC)
+    - cron: '0 10 * * 1'
+  workflow_dispatch:  # Allows manual trigger from GitHub UI
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run demo scan
+        env:
+          GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
+        run: |
+          python run.py --demo --dashboard
+
+      - name: Copy dashboard to Pages folder
+        run: |
+          mkdir -p docs
+          cp -f agx_property_intel_dashboard.html docs/dashboard.html
+          cp -f index.html docs/index.html
+
+      - name: Commit updated dashboard
+        run: |
+          git config user.name "AGX Property Intel Bot"
+          git config user.email "bot@agx-centralfl.com"
+          git add docs/
+          git diff --staged --quiet || git commit -m "Update dashboard $(date +'%Y-%m-%d')"
+          git push
