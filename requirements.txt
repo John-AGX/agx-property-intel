@@ -1,0 +1,8 @@
+# Core (no external deps needed for demo + Google API modes)
+# Python 3.8+ stdlib only
+
+# Optional — for county portal scraping (free mode)
+selenium>=4.10.0
+
+# Optional — for PDF guide generation
+reportlab>=4.0
