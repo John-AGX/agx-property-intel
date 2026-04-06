@@ -1,601 +1,883 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AGX Property Intelligence Dashboard</title>
-    <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f2818;color:#e0e0e0;min-height:100vh}
-.header{background:linear-gradient(135deg,#1b8541,#00d084);padding:24px 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.header h1{font-size:1.8em;color:white;letter-spacing:1px}
-.header .subtitle{color:rgba(255,255,255,0.85);font-size:0.95em}
-.header .meta{text-align:right;color:rgba(255,255,255,0.8);font-size:0.8em}
-.stats-bar{display:flex;justify-content:center;gap:32px;padding:20px;background:#1a3a24;border-bottom:1px solid #2a5a34;flex-wrap:wrap}
-.stat{text-align:center;min-width:100px}
-.stat .num{font-size:2em;font-weight:700;color:#00d084}
-.stat .label{font-size:0.75em;color:#8aaa94;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
-.controls{display:flex;gap:16px;padding:20px 32px;align-items:center;flex-wrap:wrap}
-.search{flex:1;min-width:200px;padding:10px 16px;border-radius:8px;border:1px solid #2a5a34;background:#1a3a24;color:#e0e0e0;font-size:0.95em}
-.search::placeholder{color:#5a7a64}
-select{padding:10px 16px;border-radius:8px;border:1px solid #2a5a34;background:#1a3a24;color:#e0e0e0;font-size:0.9em}
-.container{max-width:1200px;margin:0 auto;padding:0 20px 40px}
-.card{background:#1a3a24;border:1px solid #2a5a34;border-radius:12px;margin:20px 0;overflow:hidden;transition:transform 0.2s}
-.card:hover{transform:translateY(-2px)}
-.card-header{display:flex;justify-content:space-between;align-items:flex-start;padding:20px 24px;gap:16px;flex-wrap:wrap}
-.card-header .name{font-size:1.3em;font-weight:700;color:white}
-.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:0.75em;font-weight:700;margin-left:8px}
-.badge.hot{background:rgba(255,107,53,0.2);color:#ff6b35}
-.badge.warm{background:rgba(255,193,7,0.2);color:#ffc107}
-.badge.cold{background:rgba(100,181,246,0.2);color:#64b5f6}
-.address{color:#8aaa94;font-size:0.9em;margin-top:4px}
-.score-box{text-align:center;min-width:80px}
-.score-box .score{font-size:2.2em;font-weight:800}
-.score-box .score.hot{color:#ff6b35}
-.score-box .score.warm{color:#ffc107}
-.score-box .score.cold{color:#64b5f6}
-.score-box .label{font-size:0.65em;text-transform:uppercase;letter-spacing:1px;color:#8aaa94}
-.score-bar{height:4px;border-radius:2px;background:#2a5a34;margin-top:4px;overflow:hidden}
-.score-fill{height:100%;border-radius:2px}
-.card-body{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#2a5a34}
-.card-body>div{background:#1a3a24;padding:16px 24px}
-.section-title{font-size:0.75em;text-transform:uppercase;letter-spacing:1px;color:#00d084;margin-bottom:8px}
-.detail{font-size:0.85em;color:#b0c8b8;line-height:1.7}
-.detail strong{color:#e0e0e0}
-.flag{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}
-.flag.red{background:#ff6b35}
-.flag.yellow{background:#ffc107}
-.flag.green{background:#4caf50}
-.footer{text-align:center;padding:30px;color:#5a7a64;font-size:0.8em}
-.empty-state{text-align:center;padding:60px 20px;color:#5a7a64}
-.empty-state h2{color:#00d084;margin-bottom:12px}
-.model-info{background:#0f2818;border:1px solid #2a5a34;border-radius:8px;padding:16px 24px;margin:20px auto;max-width:1200px;font-size:0.8em;color:#8aaa94}
-.model-info strong{color:#00d084}
-@media(max-width:768px){
-.card-body{grid-template-columns:1fr}
-.header h1{font-size:1.3em}
-.stats-bar{gap:16px}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGX Central FL — Property Intelligence Dashboard</title>
+<style>
+
+:root {
+    --bg: #0b1a10;
+    --card-bg: #112118;
+    --card-border: #1e3a28;
+    --accent: #1b8541;
+    --accent-light: #00d084;
+    --accent-dim: #145a2e;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --red: #ef4444;
+    --orange: #f59e0b;
+    --blue: #3b82f6;
+    --purple: #8b5cf6;
 }
-    </style>
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+.header {
+    background: linear-gradient(135deg, #0f2818 0%, #071a0d 100%);
+    border-bottom: 2px solid var(--accent);
+    padding: 2rem 2rem 1.5rem;
+}
+
+.header-logo { height: 50px; margin-bottom: 0.8rem; }
+
+.header-top {
+    display: flex; justify-content: space-between;
+    align-items: flex-start; margin-bottom: 1.5rem;
+}
+
+.header h1 { font-size: 1.8rem; font-weight: 700; color: var(--accent-light); }
+.header .subtitle { color: var(--text-dim); font-size: 0.95rem; margin-top: 0.3rem; }
+.generated-date { color: var(--text-dim); font-size: 0.85rem; text-align: right; }
+
+.stats-bar { display: flex; gap: 2rem; flex-wrap: wrap; }
+.stat { text-align: center; }
+.stat-value { font-size: 2rem; font-weight: 700; color: var(--accent-light); line-height: 1; }
+.stat-value.hot { color: var(--red); }
+.stat-value.warm { color: var(--orange); }
+.stat-value.alert { color: var(--red); }
+.stat-label { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.3rem; }
+
+.controls {
+    padding: 1.2rem 2rem; background: #0d1f14;
+    border-bottom: 1px solid var(--card-border);
+    display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;
+}
+
+.search-box {
+    flex: 1; min-width: 250px; padding: 0.6rem 1rem;
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 8px; color: var(--text); font-size: 0.9rem; outline: none;
+}
+.search-box:focus { border-color: var(--accent-light); }
+
+.sort-select {
+    padding: 0.6rem 1rem; background: var(--card-bg);
+    border: 1px solid var(--card-border); border-radius: 8px;
+    color: var(--text); font-size: 0.9rem; cursor: pointer;
+}
+
+.leads-container { padding: 1.5rem 2rem; max-width: 1200px; margin: 0 auto; }
+
+.lead-card {
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem;
+    transition: border-color 0.2s, transform 0.2s;
+    border-left: 4px solid var(--card-border);
+}
+.lead-card:hover { transform: translateY(-1px); }
+.lead-card.priority-hot { border-left-color: var(--red); }
+.lead-card.priority-warm { border-left-color: var(--orange); }
+.lead-card.priority-cold { border-left-color: var(--blue); }
+
+.lead-header {
+    display: flex; justify-content: space-between;
+    align-items: flex-start; margin-bottom: 1rem;
+}
+
+.lead-name-row { display: flex; align-items: center; gap: 0.8rem; }
+.lead-name { font-size: 1.2rem; font-weight: 600; }
+.lead-address { color: var(--text-dim); font-size: 0.85rem; margin-top: 0.2rem; }
+.lead-rating { font-size: 0.85rem; margin-top: 0.3rem; color: var(--text-dim); }
+.rating-display { color: var(--orange); }
+
+.priority-badge {
+    padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem;
+    font-weight: 600; letter-spacing: 0.05em;
+}
+.priority-badge.priority-hot { background: rgba(239,68,68,0.2); color: var(--red); }
+.priority-badge.priority-warm { background: rgba(245,158,11,0.2); color: var(--orange); }
+.priority-badge.priority-cold { background: rgba(59,130,246,0.2); color: var(--blue); }
+
+.lead-score-section { text-align: center; flex-shrink: 0; }
+.lead-score { font-size: 2rem; font-weight: 800; color: var(--accent-light); line-height: 1; }
+.lead-score-label { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.2rem; }
+
+.score-bar {
+    display: flex; height: 4px; border-radius: 2px; overflow: hidden;
+    margin-top: 0.5rem; width: 80px; background: rgba(255,255,255,0.1);
+}
+.score-segment { min-width: 2px; }
+
+.profile-sections {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;
+    margin-bottom: 0.8rem;
+}
+
+.profile-section {
+    padding: 0.6rem 0.8rem; background: rgba(0,0,0,0.2);
+    border-radius: 6px; font-size: 0.82rem; line-height: 1.5;
+}
+
+.section-label {
+    font-weight: 600; color: var(--accent-light); font-size: 0.75rem;
+    text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.3rem;
+}
+
+.section-content { color: var(--text-dim); }
+.section-content strong { color: var(--text); font-weight: 500; }
+.section-content em { color: var(--text-dim); opacity: 0.6; }
+
+.contact-link {
+    color: var(--accent-light); text-decoration: none; margin-right: 1rem;
+}
+.contact-link:hover { text-decoration: underline; }
+
+.toggle-issues {
+    background: none; border: 1px solid var(--card-border);
+    color: var(--text-dim); padding: 0.5rem 1rem; border-radius: 6px;
+    cursor: pointer; font-size: 0.85rem; width: 100%; text-align: left;
+}
+.toggle-issues:hover { border-color: var(--accent); color: var(--text); }
+
+.issues-list { margin-top: 0.8rem; }
+.issue-item {
+    background: rgba(0,0,0,0.2); border-radius: 8px; padding: 1rem;
+    margin-bottom: 0.5rem; border-left: 3px solid var(--accent-light);
+}
+.issue-header { display: flex; justify-content: space-between; margin-bottom: 0.4rem; }
+.issue-category { font-weight: 600; font-size: 0.85rem; color: var(--accent-light); }
+.issue-severity { font-size: 0.8rem; color: var(--red); font-weight: 500; }
+.issue-review { display: flex; gap: 0.8rem; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0.4rem; }
+.review-stars { color: var(--orange); }
+.issue-excerpt { font-size: 0.85rem; color: var(--text); font-style: italic; line-height: 1.5; opacity: 0.9; }
+
+@media (max-width: 768px) {
+    .header { padding: 1.2rem; }
+    .header h1 { font-size: 1.3rem; }
+    .profile-sections { grid-template-columns: 1fr; }
+    .leads-container { padding: 1rem; }
+    .lead-header { flex-direction: column; }
+}
+
+</style>
 </head>
 <body>
-    <div class="header">
+
+<div class="header">
+    <div class="header-top">
         <div>
-            <h1>AGX Property Intelligence</h1>
-            <span class="subtitle">Central Florida Market Intelligence · Scoring Model v2</span>
+            <img src="https://agxco.com/wp-content/uploads/2025/05/agx-header-2.png" alt="AG Exteriors" class="header-logo" onerror="this.style.display='none'">
+            <h1>Property Intelligence Dashboard</h1>
+            <p class="subtitle">Multifamily Complex Profiles · Central Florida · 7 Counties</p>
         </div>
-        <div class="meta">
-            Updated April 01, 2026 · 06:27 AM<br>
-            Database: 12 properties · Deep Scan Mode
+        <div class="generated-date">
+            Generated: April 06, 2026 at 12:04 PM<br>
+            Database: 8 properties
         </div>
     </div>
-
     <div class="stats-bar">
-        <div class="stat"><div class="num">12</div><div class="label">Properties</div></div>
-        <div class="stat"><div class="num">1</div><div class="label">Hot Leads</div></div>
-        <div class="stat"><div class="num">6</div><div class="label">Warm Leads</div></div>
-        <div class="stat"><div class="num">5</div><div class="label">Cold Leads</div></div>
-        <div class="stat"><div class="num">0</div><div class="label">Open Violations</div></div>
-        <div class="stat"><div class="num">3</div><div class="label">Counties</div></div>
-    </div>
-
-    <div class="model-info">
-        <strong>Scoring Model v2</strong> — Max 100 pts: Building Age (20) · Roof Permits (15) · Exterior Permits (10) · <span style="color:#ff6b35">Code Violations (25)</span> · Reviews (15) · Size (10) · Mgmt (5)
-        <br>Code violations carry the heaviest weight. 3+ open exterior violations = auto-HOT regardless of total score. Data freshness tracked per card — yellow = needs re-scan.
-    </div>
-
-    <div class="controls">
-        <input type="text" class="search" id="searchInput" placeholder="Search by property name or address...">
-        <select id="sortSelect">
-            <option value="score-desc">Score (Highest First)</option>
-            <option value="score-asc">Score (Lowest First)</option>
-            <option value="name">Name (A-Z)</option>
-        </select>
-        <select id="filterSelect">
-            <option value="all">All Properties</option>
-            <option value="hot">Hot Leads</option>
-            <option value="warm">Warm Leads</option>
-            <option value="cold">Cold Leads</option>
-        </select>
-    </div>
-
-    <div class="container">
-
-        <div class="card" data-name="Viridian Apartments" data-score="63" data-tier="hot">
-            <div class="card-header">
-                <div>
-                    <div class="name">Viridian Apartments<span class="badge hot">HOT</span></div>
-                    <div class="address">12702 University Club Dr, Tampa, FL 33612 · Hillsborough County</div>
-                    <div style="font-size:0.75em;color:#8aaa94;margin-top:4px"><span style="color:#4caf50">Scanned 2026-03-31</span> · Score v2: <span style="color:#8aaa94">Age:20</span> · <span style="color:#8aaa94">Roof:8</span> · <span style="color:#8aaa94">Exterior:5</span> · <span style="color:#8aaa94">Violations:0</span> · <span style="color:#8aaa94">Reviews:15</span> · <span style="color:#8aaa94">Size:10</span> · <span style="color:#8aaa94">Mgmt:5</span></div>
-                </div>
-                <div class="score-box">
-                    <div class="score hot">63</div>
-                    <div class="label">LEAD SCORE</div>
-                    <div class="score-bar"><div class="score-fill hot" style="width:63%;background:#ff6b35"></div></div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div>
-                    <div class="section-title">Property Details</div>
-                    <div class="detail"><strong>Built:</strong> 1973 (53 yrs old)</div>
-                    <div class="detail"><strong>Units:</strong> 536</div>
-                    
-                </div>
-                <div>
-                    <div class="section-title">Owner / Management</div>
-                    <div class="detail"><strong>Legal Owner:</strong> Sunstone Tampa II LLC<br><strong>Parent Co:</strong> Sunstone Two Tree<br><strong>Prop. Mgmt:</strong> BH Management Services, Inc.<br><strong>Last Sale:</strong> $59,000,000 (2020-12-31)<br><span style="color:#4caf50;font-size:0.8em">✓ PA Verified</span></div>
-                </div>
-                <div>
-                    <div class="section-title">Code Enforcement</div>
-                    <div class="detail"><span class="flag green"></span> <strong>Open Violations:</strong> 0 (1 closed on record)<br><span style="font-size:0.8em;color:#8aaa94">CMP-20-0004606: Complaint 05/13/2020, Closed - No Violation Observed</span></div>
-                    <div class="detail"><strong>Jurisdiction:</strong> City of Tampa</div>
-                </div>
-                <div>
-                    <div class="section-title">Permits & Contact</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Roof:</strong> Unknown</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Exterior:</strong> Unknown</div>
-                    <div class="detail"><strong>Maps:</strong> <a href="https://www.google.com/maps/search/Viridian+Apartments+Tampa+Florida" target="_blank" style="color:#00d084">Google Reviews ↗</a></div>
-                </div>
-            </div>
+        <div class="stat">
+            <div class="stat-value">8</div>
+            <div class="stat-label">Properties Tracked</div>
         </div>
-        <div class="card" data-name="The Cornerstone" data-score="56" data-tier="warm">
-            <div class="card-header">
-                <div>
-                    <div class="name">The Cornerstone<span class="badge warm">WARM</span></div>
-                    <div class="address">4802 S Conway Rd, Orlando, FL 32812 · Orange County</div>
-                    <div style="font-size:0.75em;color:#8aaa94;margin-top:4px"><span style="color:#4caf50">Scanned 2026-03-31</span> · Score v2: <span style="color:#8aaa94">Age:20</span> · <span style="color:#8aaa94">Roof:8</span> · <span style="color:#8aaa94">Exterior:5</span> · <span style="color:#8aaa94">Violations:0</span> · <span style="color:#8aaa94">Reviews:10</span> · <span style="color:#8aaa94">Size:8</span> · <span style="color:#8aaa94">Mgmt:5</span></div>
-                </div>
-                <div class="score-box">
-                    <div class="score warm">56</div>
-                    <div class="label">LEAD SCORE</div>
-                    <div class="score-bar"><div class="score-fill warm" style="width:56%;background:#ffc107"></div></div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div>
-                    <div class="section-title">Property Details</div>
-                    <div class="detail"><strong>Built:</strong> 1986 (40 yrs old)</div>
-                    <div class="detail"><strong>Units:</strong> 430</div>
-                    
-                </div>
-                <div>
-                    <div class="section-title">Owner / Management</div>
-                    <div class="detail"><strong>Manager:</strong> BH Management Services, Inc.<br><span style="color:#ffc107;font-size:0.8em">⚠ Needs PA verification</span></div>
-                </div>
-                <div>
-                    <div class="section-title">Code Enforcement</div>
-                    <div class="detail"><span class="flag yellow"></span> <strong>Open Violations:</strong> <span style="color:#ffc107">Not yet scanned</span></div>
-                    <div class="detail"><strong>Jurisdiction:</strong> Unincorporated Orange County (confirmed not City of Orlando)</div>
-                </div>
-                <div>
-                    <div class="section-title">Permits & Contact</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Roof:</strong> Unknown</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Exterior:</strong> Unknown</div>
-                    <div class="detail"><strong>Maps:</strong> <a href="https://www.google.com/maps/search/The+Cornerstone+Orlando+Florida" target="_blank" style="color:#00d084">Google Reviews ↗</a></div>
-                </div>
-            </div>
+        <div class="stat">
+            <div class="stat-value hot">6</div>
+            <div class="stat-label">Hot Leads</div>
         </div>
-        <div class="card" data-name="Hawthorne Groves" data-score="51" data-tier="warm">
-            <div class="card-header">
-                <div>
-                    <div class="name">Hawthorne Groves<span class="badge warm">WARM</span></div>
-                    <div class="address">204 Hawthorne Groves Blvd, Orlando, FL 32835 · Orange County</div>
-                    <div style="font-size:0.75em;color:#8aaa94;margin-top:4px"><span style="color:#4caf50">Scanned 2026-03-31</span> · Score v2: <span style="color:#8aaa94">Age:15</span> · <span style="color:#8aaa94">Roof:8</span> · <span style="color:#8aaa94">Exterior:5</span> · <span style="color:#8aaa94">Violations:0</span> · <span style="color:#8aaa94">Reviews:10</span> · <span style="color:#8aaa94">Size:8</span> · <span style="color:#8aaa94">Mgmt:5</span></div>
-                </div>
-                <div class="score-box">
-                    <div class="score warm">51</div>
-                    <div class="label">LEAD SCORE</div>
-                    <div class="score-bar"><div class="score-fill warm" style="width:51%;background:#ffc107"></div></div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div>
-                    <div class="section-title">Property Details</div>
-                    <div class="detail"><strong>Built:</strong> 2001 (25 yrs old)</div>
-                    <div class="detail"><strong>Units:</strong> 328</div>
-                    
-                </div>
-                <div>
-                    <div class="section-title">Owner / Management</div>
-                    <div class="detail"><strong>Manager:</strong> Greystar Real Estate Partners<br><span style="color:#ffc107;font-size:0.8em">⚠ Needs PA verification</span></div>
-                </div>
-                <div>
-                    <div class="section-title">Code Enforcement</div>
-                    <div class="detail"><span class="flag yellow"></span> <strong>Open Violations:</strong> <span style="color:#ffc107">Not yet scanned</span></div>
-                    <div class="detail"><strong>Jurisdiction:</strong> Unincorporated Orange County (needs verification)</div>
-                </div>
-                <div>
-                    <div class="section-title">Permits & Contact</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Roof:</strong> Unknown</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Exterior:</strong> Unknown</div>
-                    <div class="detail"><strong>Maps:</strong> <a href="https://www.google.com/maps/search/Hawthorne+Groves+Orlando+Florida" target="_blank" style="color:#00d084">Google Reviews ↗</a></div>
-                </div>
-            </div>
+        <div class="stat">
+            <div class="stat-value warm">2</div>
+            <div class="stat-label">Warm Leads</div>
         </div>
-        <div class="card" data-name="Lodge at Hidden River" data-score="46" data-tier="warm">
-            <div class="card-header">
-                <div>
-                    <div class="name">Lodge at Hidden River<span class="badge warm">WARM</span><span style="background:rgba(0,208,132,0.2);color:#00d084;padding:2px 8px;border-radius:4px;font-size:0.75em;margin-left:8px">CLIENT</span></div>
-                    <div class="address">14059 Riveredge Dr, Tampa, FL 33637 · Hillsborough County</div>
-                    <div style="font-size:0.75em;color:#8aaa94;margin-top:4px"><span style="color:#4caf50">Scanned 2026-03-31</span> · Score v2: <span style="color:#8aaa94">Age:15</span> · <span style="color:#8aaa94">Roof:8</span> · <span style="color:#8aaa94">Exterior:0</span> · <span style="color:#8aaa94">Violations:0</span> · <span style="color:#8aaa94">Reviews:10</span> · <span style="color:#8aaa94">Size:8</span> · <span style="color:#8aaa94">Mgmt:5</span></div>
-                </div>
-                <div class="score-box">
-                    <div class="score warm">46</div>
-                    <div class="label">LEAD SCORE</div>
-                    <div class="score-bar"><div class="score-fill warm" style="width:46%;background:#ffc107"></div></div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div>
-                    <div class="section-title">Property Details</div>
-                    <div class="detail"><strong>Built:</strong> 1999 (27 yrs old)</div>
-                    <div class="detail"><strong>Units:</strong> 492</div>
-                    <div class="detail" style="color:#00d084"><strong>AGX Status:</strong> EXISTING CLIENT - Active full paint job in progress</div>
-                </div>
-                <div>
-                    <div class="section-title">Owner / Management</div>
-                    <div class="detail"><strong>Manager:</strong> Preferred Residential Management (PAC)<br><strong>Parent Co:</strong> PAC (Blackstone/LivCor)<br><span style="color:#ffc107;font-size:0.8em">⚠ Needs PA verification</span></div>
-                </div>
-                <div>
-                    <div class="section-title">Code Enforcement</div>
-                    <div class="detail"><span class="flag yellow"></span> <strong>Open Violations:</strong> <span style="color:#ffc107">Not yet scanned</span></div>
-                    <div class="detail"><strong>Jurisdiction:</strong> City of Tampa / Hillsborough</div>
-                </div>
-                <div>
-                    <div class="section-title">Permits & Contact</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Roof:</strong> Unknown</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Exterior:</strong> Unknown</div>
-                    <div class="detail"><strong>Maps:</strong> <a href="https://www.google.com/maps/search/Lodge+at+Hidden+River+Tampa+Florida" target="_blank" style="color:#00d084">Google Reviews ↗</a></div>
-                </div>
-            </div>
+        <div class="stat">
+            <div class="stat-value">8</div>
+            <div class="stat-label">With Review Issues</div>
         </div>
-        <div class="card" data-name="Aria at Millenia" data-score="43" data-tier="warm">
-            <div class="card-header">
-                <div>
-                    <div class="name">Aria at Millenia<span class="badge warm">WARM</span></div>
-                    <div class="address">5000 Millenia Palms Dr, Orlando, FL 32839 · Orange County</div>
-                    <div style="font-size:0.75em;color:#8aaa94;margin-top:4px"><span style="color:#4caf50">Scanned 2026-03-31</span> · Score v2: <span style="color:#8aaa94">Age:10</span> · <span style="color:#8aaa94">Roof:8</span> · <span style="color:#8aaa94">Exterior:5</span> · <span style="color:#8aaa94">Violations:0</span> · <span style="color:#8aaa94">Reviews:10</span> · <span style="color:#8aaa94">Size:5</span> · <span style="color:#8aaa94">Mgmt:5</span></div>
-                </div>
-                <div class="score-box">
-                    <div class="score warm">43</div>
-                    <div class="label">LEAD SCORE</div>
-                    <div class="score-bar"><div class="score-fill warm" style="width:43%;background:#ffc107"></div></div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div>
-                    <div class="section-title">Property Details</div>
-                    <div class="detail"><strong>Built:</strong> Unknown </div>
-                    <div class="detail"><strong>Units:</strong> Unknown</div>
-                    
-                </div>
-                <div>
-                    <div class="section-title">Owner / Management</div>
-                    <div class="detail"><strong>Legal Owner:</strong> BH Management Services, Inc.<br><span style="color:#ffc107;font-size:0.8em">⚠ Needs PA verification</span></div>
-                </div>
-                <div>
-                    <div class="section-title">Code Enforcement</div>
-                    <div class="detail"><span class="flag yellow"></span> <strong>Open Violations:</strong> <span style="color:#ffc107">Not yet scanned</span></div>
-                    <div class="detail"><strong>Jurisdiction:</strong> Needs verification</div>
-                </div>
-                <div>
-                    <div class="section-title">Permits & Contact</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Roof:</strong> Unknown</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Exterior:</strong> Unknown</div>
-                    <div class="detail"><strong>Maps:</strong> <a href="https://www.google.com/maps/search/Aria+at+Millenia+Orlando+Florida" target="_blank" style="color:#00d084">Google Reviews ↗</a></div>
-                </div>
-            </div>
+        <div class="stat">
+            <div class="stat-value">8</div>
+            <div class="stat-label">With Permit Data</div>
         </div>
-        <div class="card" data-name="Aqua at Millenia" data-score="38" data-tier="warm">
-            <div class="card-header">
-                <div>
-                    <div class="name">Aqua at Millenia<span class="badge warm">WARM</span></div>
-                    <div class="address">5451 Millenia Lakes Blvd, Orlando, FL 32839 · Orange County</div>
-                    <div style="font-size:0.75em;color:#8aaa94;margin-top:4px"><span style="color:#4caf50">Scanned 2026-03-31</span> · Score v2: <span style="color:#8aaa94">Age:10</span> · <span style="color:#8aaa94">Roof:8</span> · <span style="color:#8aaa94">Exterior:5</span> · <span style="color:#8aaa94">Violations:0</span> · <span style="color:#8aaa94">Reviews:5</span> · <span style="color:#8aaa94">Size:5</span> · <span style="color:#8aaa94">Mgmt:5</span></div>
-                </div>
-                <div class="score-box">
-                    <div class="score warm">38</div>
-                    <div class="label">LEAD SCORE</div>
-                    <div class="score-bar"><div class="score-fill warm" style="width:38%;background:#ffc107"></div></div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div>
-                    <div class="section-title">Property Details</div>
-                    <div class="detail"><strong>Built:</strong> 2009 (17 yrs old)</div>
-                    <div class="detail"><strong>Units:</strong> Unknown</div>
-                    
-                </div>
-                <div>
-                    <div class="section-title">Owner / Management</div>
-                    <div class="detail"><strong>Legal Owner:</strong> Bel Millenia LLC<br><strong>Prop. Mgmt:</strong> Greystar Real Estate Partners<br><span style="color:#4caf50;font-size:0.8em">✓ PA Verified</span></div>
-                </div>
-                <div>
-                    <div class="section-title">Code Enforcement</div>
-                    <div class="detail"><span class="flag yellow"></span> <strong>Open Violations:</strong> <span style="color:#ffc107">Not yet scanned</span></div>
-                    <div class="detail"><strong>Jurisdiction:</strong> City of Orlando (needs verification)</div>
-                </div>
-                <div>
-                    <div class="section-title">Permits & Contact</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Roof:</strong> Unknown</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Exterior:</strong> Unknown</div>
-                    <div class="detail"><strong>Maps:</strong> <a href="https://www.google.com/maps/search/Aqua+at+Millenia+Orlando+Florida" target="_blank" style="color:#00d084">Google Reviews ↗</a></div>
-                </div>
-            </div>
-        </div>
-        <div class="card" data-name="Sabal Palm at Lake Buena Vista" data-score="35" data-tier="warm">
-            <div class="card-header">
-                <div>
-                    <div class="name">Sabal Palm at Lake Buena Vista<span class="badge warm">WARM</span></div>
-                    <div class="address">8801 Dovershire Blvd, Orlando, FL 32836 · Orange County</div>
-                    <div style="font-size:0.75em;color:#8aaa94;margin-top:4px"><span style="color:#4caf50">Scanned 2026-03-31</span> · Score v2: <span style="color:#8aaa94">Age:10</span> · <span style="color:#8aaa94">Roof:5</span> · <span style="color:#8aaa94">Exterior:5</span> · <span style="color:#8aaa94">Violations:0</span> · <span style="color:#8aaa94">Reviews:5</span> · <span style="color:#8aaa94">Size:5</span> · <span style="color:#8aaa94">Mgmt:5</span></div>
-                </div>
-                <div class="score-box">
-                    <div class="score warm">35</div>
-                    <div class="label">LEAD SCORE</div>
-                    <div class="score-bar"><div class="score-fill warm" style="width:35%;background:#ffc107"></div></div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div>
-                    <div class="section-title">Property Details</div>
-                    <div class="detail"><strong>Built:</strong> Unknown </div>
-                    <div class="detail"><strong>Units:</strong> Unknown</div>
-                    
-                </div>
-                <div>
-                    <div class="section-title">Owner / Management</div>
-                    <div class="detail"><strong>Legal Owner:</strong> BH Management Services, Inc.<br><span style="color:#ffc107;font-size:0.8em">⚠ Needs PA verification</span></div>
-                </div>
-                <div>
-                    <div class="section-title">Code Enforcement</div>
-                    <div class="detail"><span class="flag yellow"></span> <strong>Open Violations:</strong> <span style="color:#ffc107">Not yet scanned</span></div>
-                    <div class="detail"><strong>Jurisdiction:</strong> Unincorporated Orange County</div>
-                </div>
-                <div>
-                    <div class="section-title">Permits & Contact</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Roof:</strong> Unknown</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Exterior:</strong> Unknown</div>
-                    <div class="detail"><strong>Maps:</strong> <a href="https://www.google.com/maps/search/Sabal+Palm+at+Lake+Buena+Vista+Orlando+Florida" target="_blank" style="color:#00d084">Google Reviews ↗</a></div>
-                </div>
-            </div>
-        </div>
-        <div class="card" data-name="Citi Lakes" data-score="33" data-tier="cold">
-            <div class="card-header">
-                <div>
-                    <div class="name">Citi Lakes<span class="badge cold">COLD</span><span style="background:rgba(0,208,132,0.2);color:#00d084;padding:2px 8px;border-radius:4px;font-size:0.75em;margin-left:8px">CLIENT</span></div>
-                    <div class="address">500 NE 1st Ave, Miami, FL 33132 · Miami-Dade County</div>
-                    <div style="font-size:0.75em;color:#8aaa94;margin-top:4px"><span style="color:#4caf50">Scanned 2026-03-31</span> · Score v2: <span style="color:#8aaa94">Age:10</span> · <span style="color:#8aaa94">Roof:5</span> · <span style="color:#8aaa94">Exterior:5</span> · <span style="color:#8aaa94">Violations:0</span> · <span style="color:#8aaa94">Reviews:5</span> · <span style="color:#8aaa94">Size:5</span> · <span style="color:#8aaa94">Mgmt:3</span></div>
-                </div>
-                <div class="score-box">
-                    <div class="score cold">33</div>
-                    <div class="label">LEAD SCORE</div>
-                    <div class="score-bar"><div class="score-fill cold" style="width:33%;background:#64b5f6"></div></div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div>
-                    <div class="section-title">Property Details</div>
-                    <div class="detail"><strong>Built:</strong> Unknown </div>
-                    <div class="detail"><strong>Units:</strong> Unknown</div>
-                    <div class="detail" style="color:#00d084"><strong>AGX Status:</strong> EXISTING CLIENT</div>
-                </div>
-                <div>
-                    <div class="section-title">Owner / Management</div>
-                    <div class="detail"><strong>Legal Owner:</strong> Legacy Ventures LLC<br><span style="color:#ffc107;font-size:0.8em">⚠ Needs PA verification</span></div>
-                </div>
-                <div>
-                    <div class="section-title">Code Enforcement</div>
-                    <div class="detail"><span class="flag yellow"></span> <strong>Open Violations:</strong> <span style="color:#ffc107">Not yet scanned</span></div>
-                    <div class="detail"><strong>Jurisdiction:</strong> City of Miami</div>
-                </div>
-                <div>
-                    <div class="section-title">Permits & Contact</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Roof:</strong> Unknown</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Exterior:</strong> Unknown</div>
-                    <div class="detail"><strong>Maps:</strong> <a href="https://www.google.com/maps/search/Citi+Lakes+Miami+Florida" target="_blank" style="color:#00d084">Google Reviews ↗</a></div>
-                </div>
-            </div>
-        </div>
-        <div class="card" data-name="Crosstown Walk" data-score="30" data-tier="cold">
-            <div class="card-header">
-                <div>
-                    <div class="name">Crosstown Walk<span class="badge cold">COLD</span></div>
-                    <div class="address">2210 Fitness Club Way, Tampa, FL 33619 · Hillsborough County</div>
-                    <div style="font-size:0.75em;color:#8aaa94;margin-top:4px"><span style="color:#4caf50">Scanned 2026-03-31</span> · Score v2: <span style="color:#8aaa94">Age:5</span> · <span style="color:#8aaa94">Roof:3</span> · <span style="color:#8aaa94">Exterior:4</span> · <span style="color:#8aaa94">Violations:0</span> · <span style="color:#8aaa94">Reviews:5</span> · <span style="color:#8aaa94">Size:8</span> · <span style="color:#8aaa94">Mgmt:5</span></div>
-                </div>
-                <div class="score-box">
-                    <div class="score cold">30</div>
-                    <div class="label">LEAD SCORE</div>
-                    <div class="score-bar"><div class="score-fill cold" style="width:30%;background:#64b5f6"></div></div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div>
-                    <div class="section-title">Property Details</div>
-                    <div class="detail"><strong>Built:</strong> 2014 (12 yrs old)</div>
-                    <div class="detail"><strong>Units:</strong> 342</div>
-                    
-                </div>
-                <div>
-                    <div class="section-title">Owner / Management</div>
-                    <div class="detail"><strong>Legal Owner:</strong> Preferred Residential Management (PAC)<br><strong>Parent Co:</strong> PAC (Blackstone/LivCor)<br><span style="color:#ffc107;font-size:0.8em">⚠ Needs PA verification</span></div>
-                </div>
-                <div>
-                    <div class="section-title">Code Enforcement</div>
-                    <div class="detail"><span class="flag yellow"></span> <strong>Open Violations:</strong> <span style="color:#ffc107">Not yet scanned</span></div>
-                    <div class="detail"><strong>Jurisdiction:</strong> City of Tampa</div>
-                </div>
-                <div>
-                    <div class="section-title">Permits & Contact</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Roof:</strong> Unknown</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Exterior:</strong> Unknown</div>
-                    <div class="detail"><strong>Maps:</strong> <a href="https://www.google.com/maps/search/Crosstown+Walk+Tampa+Florida" target="_blank" style="color:#00d084">Google Reviews ↗</a></div>
-                </div>
-            </div>
-        </div>
-        <div class="card" data-name="Overlook at Crosstown Walk" data-score="27" data-tier="cold">
-            <div class="card-header">
-                <div>
-                    <div class="name">Overlook at Crosstown Walk<span class="badge cold">COLD</span></div>
-                    <div class="address">2300 Crosstown Walk Blvd, Tampa, FL 33619 · Hillsborough County</div>
-                    <div style="font-size:0.75em;color:#8aaa94;margin-top:4px"><span style="color:#4caf50">Scanned 2026-03-31</span> · Score v2: <span style="color:#8aaa94">Age:5</span> · <span style="color:#8aaa94">Roof:3</span> · <span style="color:#8aaa94">Exterior:4</span> · <span style="color:#8aaa94">Violations:0</span> · <span style="color:#8aaa94">Reviews:5</span> · <span style="color:#8aaa94">Size:5</span> · <span style="color:#8aaa94">Mgmt:5</span></div>
-                </div>
-                <div class="score-box">
-                    <div class="score cold">27</div>
-                    <div class="label">LEAD SCORE</div>
-                    <div class="score-bar"><div class="score-fill cold" style="width:27%;background:#64b5f6"></div></div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div>
-                    <div class="section-title">Property Details</div>
-                    <div class="detail"><strong>Built:</strong> 2016 (10 yrs old)</div>
-                    <div class="detail"><strong>Units:</strong> 180</div>
-                    
-                </div>
-                <div>
-                    <div class="section-title">Owner / Management</div>
-                    <div class="detail"><strong>Legal Owner:</strong> Preferred Residential Management (PAC)<br><strong>Parent Co:</strong> PAC (Blackstone/LivCor)<br><span style="color:#ffc107;font-size:0.8em">⚠ Needs PA verification</span></div>
-                </div>
-                <div>
-                    <div class="section-title">Code Enforcement</div>
-                    <div class="detail"><span class="flag yellow"></span> <strong>Open Violations:</strong> <span style="color:#ffc107">Not yet scanned</span></div>
-                    <div class="detail"><strong>Jurisdiction:</strong> City of Tampa</div>
-                </div>
-                <div>
-                    <div class="section-title">Permits & Contact</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Roof:</strong> Unknown</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Exterior:</strong> Unknown</div>
-                    <div class="detail"><strong>Maps:</strong> <a href="https://www.google.com/maps/search/Overlook+at+Crosstown+Walk+Tampa+Florida" target="_blank" style="color:#00d084">Google Reviews ↗</a></div>
-                </div>
-            </div>
-        </div>
-        <div class="card" data-name="Novel Midtown Tampa" data-score="18" data-tier="cold">
-            <div class="card-header">
-                <div>
-                    <div class="name">Novel Midtown Tampa<span class="badge cold">COLD</span></div>
-                    <div class="address">3730 Midtown Dr, Tampa, FL 33607 · Hillsborough County</div>
-                    <div style="font-size:0.75em;color:#8aaa94;margin-top:4px"><span style="color:#4caf50">Scanned 2026-03-31</span> · Score v2: <span style="color:#8aaa94">Age:0</span> · <span style="color:#8aaa94">Roof:0</span> · <span style="color:#8aaa94">Exterior:0</span> · <span style="color:#8aaa94">Violations:0</span> · <span style="color:#8aaa94">Reviews:5</span> · <span style="color:#8aaa94">Size:8</span> · <span style="color:#8aaa94">Mgmt:5</span></div>
-                </div>
-                <div class="score-box">
-                    <div class="score cold">18</div>
-                    <div class="label">LEAD SCORE</div>
-                    <div class="score-bar"><div class="score-fill cold" style="width:18%;background:#64b5f6"></div></div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div>
-                    <div class="section-title">Property Details</div>
-                    <div class="detail"><strong>Built:</strong> 2021 (5 yrs old)</div>
-                    <div class="detail"><strong>Units:</strong> 390</div>
-                    
-                </div>
-                <div>
-                    <div class="section-title">Owner / Management</div>
-                    <div class="detail"><strong>Legal Owner:</strong> Greystar Real Estate Partners<br><span style="color:#ffc107;font-size:0.8em">⚠ Needs PA verification</span></div>
-                </div>
-                <div>
-                    <div class="section-title">Code Enforcement</div>
-                    <div class="detail"><span class="flag yellow"></span> <strong>Open Violations:</strong> <span style="color:#ffc107">Not yet scanned</span></div>
-                    <div class="detail"><strong>Jurisdiction:</strong> City of Tampa</div>
-                </div>
-                <div>
-                    <div class="section-title">Permits & Contact</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Roof:</strong> Unknown</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Exterior:</strong> Unknown</div>
-                    <div class="detail"><strong>Maps:</strong> <a href="https://www.google.com/maps/search/Novel+Midtown+Tampa+Tampa+Florida" target="_blank" style="color:#00d084">Google Reviews ↗</a></div>
-                </div>
-            </div>
-        </div>
-        <div class="card" data-name="Encore Narcoossee" data-score="10" data-tier="cold">
-            <div class="card-header">
-                <div>
-                    <div class="name">Encore Narcoossee<span class="badge cold">COLD</span></div>
-                    <div class="address">7551 Narcoossee Rd, Orlando, FL 32822 · Orange County</div>
-                    <div style="font-size:0.75em;color:#8aaa94;margin-top:4px"><span style="color:#4caf50">Scanned 2026-03-31</span> · Score v2: <span style="color:#8aaa94">Age:0</span> · <span style="color:#8aaa94">Roof:0</span> · <span style="color:#8aaa94">Exterior:0</span> · <span style="color:#8aaa94">Violations:0</span> · <span style="color:#8aaa94">Reviews:0</span> · <span style="color:#8aaa94">Size:5</span> · <span style="color:#8aaa94">Mgmt:5</span></div>
-                </div>
-                <div class="score-box">
-                    <div class="score cold">10</div>
-                    <div class="label">LEAD SCORE</div>
-                    <div class="score-bar"><div class="score-fill cold" style="width:10%;background:#64b5f6"></div></div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div>
-                    <div class="section-title">Property Details</div>
-                    <div class="detail"><strong>Built:</strong> 2023 (3 yrs old)</div>
-                    <div class="detail"><strong>Units:</strong> 249</div>
-                    
-                </div>
-                <div>
-                    <div class="section-title">Owner / Management</div>
-                    <div class="detail"><strong>Legal Owner:</strong> Greystar Real Estate Partners<br><span style="color:#ffc107;font-size:0.8em">⚠ Needs PA verification</span></div>
-                </div>
-                <div>
-                    <div class="section-title">Code Enforcement</div>
-                    <div class="detail"><span class="flag yellow"></span> <strong>Open Violations:</strong> <span style="color:#ffc107">Not yet scanned</span></div>
-                    <div class="detail"><strong>Jurisdiction:</strong> Needs verification</div>
-                </div>
-                <div>
-                    <div class="section-title">Permits & Contact</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Roof:</strong> Unknown</div>
-                    <div class="detail"><span class="flag yellow"></span><strong>Last Exterior:</strong> Unknown</div>
-                    <div class="detail"><strong>Maps:</strong> <a href="https://www.google.com/maps/search/Encore+Narcoossee+Orlando+Florida" target="_blank" style="color:#00d084">Google Reviews ↗</a></div>
-                </div>
-            </div>
+        <div class="stat">
+            <div class="stat-value alert">5</div>
+            <div class="stat-label">Overdue Roofs</div>
         </div>
     </div>
+</div>
 
-    <div class="footer">
-        AGX Central Florida — Property Intelligence System · Deep Scan Mode · Scoring Model v2 · Updated April 01, 2026 · 06:27 AM
+<div class="controls">
+    <input type="text" class="search-box" placeholder="Search by name, address, owner, issue..." oninput="filterLeads()">
+    <select class="sort-select" onchange="sortLeads(this.value)">
+        <option value="score-desc">Sort: Lead Score (High → Low)</option>
+        <option value="score-asc">Sort: Lead Score (Low → High)</option>
+        <option value="rating-asc">Sort: Rating (Worst First)</option>
+        <option value="age-desc">Sort: Building Age (Oldest First)</option>
+        <option value="units-desc">Sort: Units (Largest First)</option>
+    </select>
+    <select class="sort-select" onchange="filterPriority(this.value)">
+        <option value="all">Filter: All Leads</option>
+        <option value="hot">🔥 Hot Only</option>
+        <option value="warm">🟡 Warm Only</option>
+        <option value="cold">🔵 Cold Only</option>
+    </select>
+</div>
+
+<div class="leads-container" id="leadsContainer">
+    
+    <div class="lead-card priority-hot" data-score="82.1" data-rating="2.4" data-priority="hot" data-county="Osceola" data-units="336" data-age="30">
+        <div class="lead-header">
+            <div class="lead-title-section">
+                <div class="lead-name-row">
+                    <h3 class="lead-name">Cypress Pointe at Kissimmee</h3>
+                    <span class="priority-badge priority-hot">🔥 HOT</span>
+                </div>
+                <p class="lead-address">8651 Treasure Island Rd, Kissimmee, FL 34747 · Osceola County</p>
+                <p class="lead-rating"><span class="rating-display">★★☆☆☆</span> 2.4/5 (412 reviews)</p>
+            </div>
+            <div class="lead-score-section">
+                <div class="lead-score">82.1</div>
+                <div class="lead-score-label">LEAD SCORE</div>
+                <div class="score-bar"><div class="score-segment" style="flex:37.1;background:#ef4444" title="Reviews: 37.1"></div><div class="score-segment" style="flex:20.0;background:#f59e0b" title="Permits: 20.0"></div><div class="score-segment" style="flex:7;background:#8b5cf6" title="Age: 7"></div><div class="score-segment" style="flex:10;background:#3b82f6" title="Size: 10"></div><div class="score-segment" style="flex:8.0;background:#00d084" title="Reach: 8.0"></div></div>
+            </div>
+        </div>
+
+        <div class="profile-sections">
+            <div class="profile-section">
+                <div class="section-label">🏢 Property Details</div>
+                <div class="section-content"><strong>Built:</strong> 1996 (30 yrs old) · <strong>Units:</strong> 336 · <strong>Buildings:</strong> 18 · <strong>Sq Ft:</strong> 312,000 · <strong>Assessed:</strong> $22,800,000 · <strong>Parcel:</strong> 01-25-27-4892-0001-00A0</div>
+            </div>
+
+            <div class="profile-section">
+                <div class="section-label">👤 Owner / Management</div>
+                <div class="section-content"><strong>Owner:</strong> CYPRESS POINTE RESORT VENTURES LLC · <span style="color:#00d084">(Active)</span> · <strong>Agent:</strong> CT Corporation System · <strong>Officers:</strong> Manager: Starwood Property Trust</div>
+            </div>
+
+            <div class="profile-section">
+                <div class="section-label">📋 Permit History</div>
+                <div class="section-content"><strong>Last Roof:</strong> 07/10/2009 (16.7yr ago) 🔴 · <strong>Last Paint:</strong> 04/18/2014 (12.0yr ago) 🔴 · <strong>Total Permits:</strong> 2</div>
+            </div>
+
+            <div class="profile-section"><div class="section-label">📞 Contact</div><div class="section-content"><a href="tel:(407) 555-0198" class="contact-link">📞 (407) 555-0198</a> <a href="https://maps.google.com/?cid=example2" target="_blank" class="contact-link">📍 Google Maps</a></div></div>
+        </div>
+
+        <div class="issues-section"><button class="toggle-issues" onclick="toggleIssues(this)">▼ Show 3 Flagged Review(s)</button><div class="issues-list" style="display:none;">
+                <div class="issue-item" data-category="Foundation & Structural">
+                    <div class="issue-header">
+                        <span class="issue-category">🏗️ Foundation & Structural</span>
+                        <span class="issue-severity">Severity: 8.5</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★☆☆☆☆</span>
+                        <span class="review-author">Robert H.</span>
+                        <span class="review-time">3 months ago</span>
+                    </div>
+                    <p class="issue-excerpt">"Cracks running down the walls in multiple units. Foundation issues that management pretends don't exist"</p>
+                </div>
+            
+                <div class="issue-item" data-category="Roofing & Water Intrusion">
+                    <div class="issue-header">
+                        <span class="issue-category">🏚️ Roofing & Water Intrusion</span>
+                        <span class="issue-severity">Severity: 7.5</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★☆☆☆☆</span>
+                        <span class="review-author">Lisa K.</span>
+                        <span class="review-time">6 weeks ago</span>
+                    </div>
+                    <p class="issue-excerpt">"Roof leak in building 12. Water comes pouring in when it rains. They just put tarps on the roof"</p>
+                </div>
+            
+                <div class="issue-item" data-category="Siding & Stucco">
+                    <div class="issue-header">
+                        <span class="issue-category">🧱 Siding & Stucco</span>
+                        <span class="issue-severity">Severity: 5.0</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★★☆☆☆</span>
+                        <span class="review-author">Michael P.</span>
+                        <span class="review-time">2 months ago</span>
+                    </div>
+                    <p class="issue-excerpt">"Stucco crumbling off the exterior walls on all the buildings. Paint peeling everywhere"</p>
+                </div>
+            </div></div>
     </div>
+    
+    <div class="lead-card priority-hot" data-score="80.0" data-rating="2.1" data-priority="hot" data-county="Orange" data-units="248" data-age="38">
+        <div class="lead-header">
+            <div class="lead-title-section">
+                <div class="lead-name-row">
+                    <h3 class="lead-name">Azalea Park Apartments</h3>
+                    <span class="priority-badge priority-hot">🔥 HOT</span>
+                </div>
+                <p class="lead-address">4820 S Semoran Blvd, Orlando, FL 32822 · Orange County</p>
+                <p class="lead-rating"><span class="rating-display">★★☆☆☆</span> 2.1/5 (287 reviews)</p>
+            </div>
+            <div class="lead-score-section">
+                <div class="lead-score">80.0</div>
+                <div class="lead-score-label">LEAD SCORE</div>
+                <div class="score-bar"><div class="score-segment" style="flex:40;background:#ef4444" title="Reviews: 40"></div><div class="score-segment" style="flex:17.0;background:#f59e0b" title="Permits: 17.0"></div><div class="score-segment" style="flex:7;background:#8b5cf6" title="Age: 7"></div><div class="score-segment" style="flex:8;background:#3b82f6" title="Size: 8"></div><div class="score-segment" style="flex:8.0;background:#00d084" title="Reach: 8.0"></div></div>
+            </div>
+        </div>
 
-    <script>
-const searchInput = document.getElementById('searchInput');
-const sortSelect = document.getElementById('sortSelect');
-const filterSelect = document.getElementById('filterSelect');
-const cards = document.querySelectorAll('.card');
+        <div class="profile-sections">
+            <div class="profile-section">
+                <div class="section-label">🏢 Property Details</div>
+                <div class="section-content"><strong>Built:</strong> 1988 (38 yrs old) · <strong>Units:</strong> 248 · <strong>Buildings:</strong> 12 · <strong>Sq Ft:</strong> 218,000 · <strong>Assessed:</strong> $14,500,000 · <strong>Parcel:</strong> 25-2245-0000-00-001</div>
+            </div>
 
-function applyFiltersAndSort() {
-    const searchTerm = searchInput.value.toLowerCase();
-    const filterTier = filterSelect.value;
-    const sortBy = sortSelect.value;
+            <div class="profile-section">
+                <div class="section-label">👤 Owner / Management</div>
+                <div class="section-content"><strong>Owner:</strong> AZALEA PARK HOLDINGS LLC · <span style="color:#00d084">(Active)</span> · <strong>Agent:</strong> Robert Chen · <strong>Officers:</strong> Manager: Robert Chen, Manager: Pacific Coast Capital Group</div>
+            </div>
 
-    const filteredCards = Array.from(cards).filter(card => {
-        const name = card.getAttribute('data-name').toLowerCase();
-        const address = card.querySelector('.address').textContent.toLowerCase();
-        const tier = card.getAttribute('data-tier');
-        const matchesSearch = name.includes(searchTerm) || address.includes(searchTerm);
-        const matchesFilter = filterTier === 'all' || tier === filterTier;
-        return matchesSearch && matchesFilter;
+            <div class="profile-section">
+                <div class="section-label">📋 Permit History</div>
+                <div class="section-content"><strong>Last Roof:</strong> 03/15/2011 (15.1yr ago) 🔴 · <strong>Last Paint:</strong> 08/22/2016 (9.6yr ago) 🔴 · <strong>Total Permits:</strong> 3</div>
+            </div>
+
+            <div class="profile-section"><div class="section-label">📞 Contact</div><div class="section-content"><a href="tel:(407) 555-0142" class="contact-link">📞 (407) 555-0142</a> <a href="https://maps.google.com/?cid=example1" target="_blank" class="contact-link">📍 Google Maps</a></div></div>
+        </div>
+
+        <div class="issues-section"><button class="toggle-issues" onclick="toggleIssues(this)">▼ Show 4 Flagged Review(s)</button><div class="issues-list" style="display:none;">
+                <div class="issue-item" data-category="Roofing & Water Intrusion">
+                    <div class="issue-header">
+                        <span class="issue-category">🏚️ Roofing & Water Intrusion</span>
+                        <span class="issue-severity">Severity: 9.0</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★☆☆☆☆</span>
+                        <span class="review-author">Maria G.</span>
+                        <span class="review-time">2 months ago</span>
+                    </div>
+                    <p class="issue-excerpt">"Every time it rains the ceiling leaks in our bedroom and the living room. They put a bucket and said they'd fix it — that was 6 months ago"</p>
+                </div>
+            
+                <div class="issue-item" data-category="Roofing & Water Intrusion">
+                    <div class="issue-header">
+                        <span class="issue-category">🏚️ Roofing & Water Intrusion</span>
+                        <span class="issue-severity">Severity: 7.5</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★☆☆☆☆</span>
+                        <span class="review-author">DeShawn W.</span>
+                        <span class="review-time">1 month ago</span>
+                    </div>
+                    <p class="issue-excerpt">"Water damage all over the ceiling in building 4. You can see the water stains from outside"</p>
+                </div>
+            
+                <div class="issue-item" data-category="Mold & Moisture">
+                    <div class="issue-header">
+                        <span class="issue-category">🦠 Mold & Moisture</span>
+                        <span class="issue-severity">Severity: 7.2</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★☆☆☆☆</span>
+                        <span class="review-author">Jessica T.</span>
+                        <span class="review-time">3 weeks ago</span>
+                    </div>
+                    <p class="issue-excerpt">"Black mold growing on the walls near where the roof leaks. My kids have been getting sick"</p>
+                </div>
+            
+                <div class="issue-item" data-category="General Exterior Neglect">
+                    <div class="issue-header">
+                        <span class="issue-category">⚠️ General Exterior Neglect</span>
+                        <span class="issue-severity">Severity: 5.5</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★☆☆☆☆</span>
+                        <span class="review-author">Tanya R.</span>
+                        <span class="review-time">1 month ago</span>
+                    </div>
+                    <p class="issue-excerpt">"This place is falling apart and they refuse to fix anything. Multiple code violations"</p>
+                </div>
+            </div></div>
+    </div>
+    
+    <div class="lead-card priority-hot" data-score="75.8" data-rating="2.3" data-priority="hot" data-county="Brevard" data-units="164" data-age="41">
+        <div class="lead-header">
+            <div class="lead-title-section">
+                <div class="lead-name-row">
+                    <h3 class="lead-name">Palm Bay Crossings</h3>
+                    <span class="priority-badge priority-hot">🔥 HOT</span>
+                </div>
+                <p class="lead-address">1890 Palm Bay Rd NE, Palm Bay, FL 32905 · Brevard County</p>
+                <p class="lead-rating"><span class="rating-display">★★☆☆☆</span> 2.3/5 (156 reviews)</p>
+            </div>
+            <div class="lead-score-section">
+                <div class="lead-score">75.8</div>
+                <div class="lead-score-label">LEAD SCORE</div>
+                <div class="score-bar"><div class="score-segment" style="flex:34.8;background:#ef4444" title="Reviews: 34.8"></div><div class="score-segment" style="flex:17.0;background:#f59e0b" title="Permits: 17.0"></div><div class="score-segment" style="flex:10;background:#8b5cf6" title="Age: 10"></div><div class="score-segment" style="flex:6;background:#3b82f6" title="Size: 6"></div><div class="score-segment" style="flex:8.0;background:#00d084" title="Reach: 8.0"></div></div>
+            </div>
+        </div>
+
+        <div class="profile-sections">
+            <div class="profile-section">
+                <div class="section-label">🏢 Property Details</div>
+                <div class="section-content"><strong>Built:</strong> 1985 (41 yrs old) · <strong>Units:</strong> 164 · <strong>Buildings:</strong> 8 · <strong>Sq Ft:</strong> 142,000 · <strong>Assessed:</strong> $8,900,000</div>
+            </div>
+
+            <div class="profile-section">
+                <div class="section-label">👤 Owner / Management</div>
+                <div class="section-content"><strong>Owner:</strong> PALM BAY RESIDENTIAL GROUP INC · <span style="color:#00d084">(Active)</span> · <strong>Agent:</strong> Patricia Donovan</div>
+            </div>
+
+            <div class="profile-section">
+                <div class="section-label">📋 Permit History</div>
+                <div class="section-content"><strong>Last Roof:</strong> 11/08/2008 (17.4yr ago) 🔴 · <strong>Last Paint:</strong> 03/27/2015 (11.0yr ago) 🔴 · <strong>Total Permits:</strong> 2</div>
+            </div>
+
+            <div class="profile-section"><div class="section-label">📞 Contact</div><div class="section-content"><a href="tel:(321) 555-0177" class="contact-link">📞 (321) 555-0177</a> <a href="https://maps.google.com/?cid=example4" target="_blank" class="contact-link">📍 Google Maps</a></div></div>
+        </div>
+
+        <div class="issues-section"><button class="toggle-issues" onclick="toggleIssues(this)">▼ Show 3 Flagged Review(s)</button><div class="issues-list" style="display:none;">
+                <div class="issue-item" data-category="Foundation & Structural">
+                    <div class="issue-header">
+                        <span class="issue-category">🏗️ Foundation & Structural</span>
+                        <span class="issue-severity">Severity: 7.8</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★☆☆☆☆</span>
+                        <span class="review-author">James C.</span>
+                        <span class="review-time">3 weeks ago</span>
+                    </div>
+                    <p class="issue-excerpt">"Huge cracks in the foundation and up the walls. Building is unsafe"</p>
+                </div>
+            
+                <div class="issue-item" data-category="Siding & Stucco">
+                    <div class="issue-header">
+                        <span class="issue-category">🧱 Siding & Stucco</span>
+                        <span class="issue-severity">Severity: 6.0</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★☆☆☆☆</span>
+                        <span class="review-author">Nicole B.</span>
+                        <span class="review-time">1 month ago</span>
+                    </div>
+                    <p class="issue-excerpt">"Siding falling off the buildings. Wood rot everywhere on the balconies"</p>
+                </div>
+            
+                <div class="issue-item" data-category="General Exterior Neglect">
+                    <div class="issue-header">
+                        <span class="issue-category">⚠️ General Exterior Neglect</span>
+                        <span class="issue-severity">Severity: 5.5</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★☆☆☆☆</span>
+                        <span class="review-author">Patricia D.</span>
+                        <span class="review-time">2 months ago</span>
+                    </div>
+                    <p class="issue-excerpt">"Management won't fix anything. Failed inspection and still no repairs"</p>
+                </div>
+            </div></div>
+    </div>
+    
+    <div class="lead-card priority-hot" data-score="71.8" data-rating="2.6" data-priority="hot" data-county="Seminole" data-units="280" data-age="35">
+        <div class="lead-header">
+            <div class="lead-title-section">
+                <div class="lead-name-row">
+                    <h3 class="lead-name">Seminole Crossings</h3>
+                    <span class="priority-badge priority-hot">🔥 HOT</span>
+                </div>
+                <p class="lead-address">500 Wymore Rd, Altamonte Springs, FL 32714 · Seminole County</p>
+                <p class="lead-rating"><span class="rating-display">★★½☆☆</span> 2.6/5 (321 reviews)</p>
+            </div>
+            <div class="lead-score-section">
+                <div class="lead-score">71.8</div>
+                <div class="lead-score-label">LEAD SCORE</div>
+                <div class="score-bar"><div class="score-segment" style="flex:31.8;background:#ef4444" title="Reviews: 31.8"></div><div class="score-segment" style="flex:17.0;background:#f59e0b" title="Permits: 17.0"></div><div class="score-segment" style="flex:7;background:#8b5cf6" title="Age: 7"></div><div class="score-segment" style="flex:8;background:#3b82f6" title="Size: 8"></div><div class="score-segment" style="flex:8.0;background:#00d084" title="Reach: 8.0"></div></div>
+            </div>
+        </div>
+
+        <div class="profile-sections">
+            <div class="profile-section">
+                <div class="section-label">🏢 Property Details</div>
+                <div class="section-content"><strong>Built:</strong> 1991 (35 yrs old) · <strong>Units:</strong> 280 · <strong>Buildings:</strong> 14 · <strong>Sq Ft:</strong> 245,000 · <strong>Assessed:</strong> $18,600,000</div>
+            </div>
+
+            <div class="profile-section">
+                <div class="section-label">👤 Owner / Management</div>
+                <div class="section-content"><strong>Owner:</strong> SEMINOLE CROSSINGS APARTMENTS LLC · <span style="color:#00d084">(Active)</span> · <strong>Agent:</strong> National Registered Agents Inc · <strong>Officers:</strong> Manager: Greystone Property Management, Member: Southeast Multi Holdings LLC</div>
+            </div>
+
+            <div class="profile-section">
+                <div class="section-label">📋 Permit History</div>
+                <div class="section-content"><strong>Last Roof:</strong> 06/14/2010 (15.8yr ago) 🔴 · <strong>Last Paint:</strong> 02/09/2017 (9.2yr ago) 🔴 · <strong>Total Permits:</strong> 3</div>
+            </div>
+
+            <div class="profile-section"><div class="section-label">📞 Contact</div><div class="section-content"><a href="tel:(407) 555-0189" class="contact-link">📞 (407) 555-0189</a> <a href="https://maps.google.com/?cid=example5" target="_blank" class="contact-link">📍 Google Maps</a></div></div>
+        </div>
+
+        <div class="issues-section"><button class="toggle-issues" onclick="toggleIssues(this)">▼ Show 3 Flagged Review(s)</button><div class="issues-list" style="display:none;">
+                <div class="issue-item" data-category="Roofing & Water Intrusion">
+                    <div class="issue-header">
+                        <span class="issue-category">🏚️ Roofing & Water Intrusion</span>
+                        <span class="issue-severity">Severity: 9.0</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★☆☆☆☆</span>
+                        <span class="review-author">Angela W.</span>
+                        <span class="review-time">2 weeks ago</span>
+                    </div>
+                    <p class="issue-excerpt">"Roof leak has been going on since Hurricane Ian. That's over THREE YEARS and still not fixed"</p>
+                </div>
+            
+                <div class="issue-item" data-category="Mold & Moisture">
+                    <div class="issue-header">
+                        <span class="issue-category">🦠 Mold & Moisture</span>
+                        <span class="issue-severity">Severity: 7.2</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★☆☆☆☆</span>
+                        <span class="review-author">Marcus H.</span>
+                        <span class="review-time">1 month ago</span>
+                    </div>
+                    <p class="issue-excerpt">"Mold from the roof leaks has spread to three rooms. Black mold on the walls"</p>
+                </div>
+            
+                <div class="issue-item" data-category="Foundation & Structural">
+                    <div class="issue-header">
+                        <span class="issue-category">🏗️ Foundation & Structural</span>
+                        <span class="issue-severity">Severity: 5.2</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★★☆☆☆</span>
+                        <span class="review-author">Laura K.</span>
+                        <span class="review-time">6 weeks ago</span>
+                    </div>
+                    <p class="issue-excerpt">"Cracks running through walls in building 9. Foundation is settling"</p>
+                </div>
+            </div></div>
+    </div>
+    
+    <div class="lead-card priority-hot" data-score="61.0" data-rating="2.7" data-priority="hot" data-county="Polk" data-units="192" data-age="34">
+        <div class="lead-header">
+            <div class="lead-title-section">
+                <div class="lead-name-row">
+                    <h3 class="lead-name">Lakeshore Reserve</h3>
+                    <span class="priority-badge priority-hot">🔥 HOT</span>
+                </div>
+                <p class="lead-address">3200 Lakeshore Blvd, Lakeland, FL 33803 · Polk County</p>
+                <p class="lead-rating"><span class="rating-display">★★½☆☆</span> 2.7/5 (198 reviews)</p>
+            </div>
+            <div class="lead-score-section">
+                <div class="lead-score">61.0</div>
+                <div class="lead-score-label">LEAD SCORE</div>
+                <div class="score-bar"><div class="score-segment" style="flex:30.0;background:#ef4444" title="Reviews: 30.0"></div><div class="score-segment" style="flex:10.0;background:#f59e0b" title="Permits: 10.0"></div><div class="score-segment" style="flex:7;background:#8b5cf6" title="Age: 7"></div><div class="score-segment" style="flex:6;background:#3b82f6" title="Size: 6"></div><div class="score-segment" style="flex:8.0;background:#00d084" title="Reach: 8.0"></div></div>
+            </div>
+        </div>
+
+        <div class="profile-sections">
+            <div class="profile-section">
+                <div class="section-label">🏢 Property Details</div>
+                <div class="section-content"><strong>Built:</strong> 1992 (34 yrs old) · <strong>Units:</strong> 192 · <strong>Buildings:</strong> 10 · <strong>Sq Ft:</strong> 164,000 · <strong>Assessed:</strong> $11,200,000</div>
+            </div>
+
+            <div class="profile-section">
+                <div class="section-label">👤 Owner / Management</div>
+                <div class="section-content"><strong>Owner:</strong> LAKESHORE MULTIFAMILY PARTNERS LP · <span style="color:#00d084">(Active)</span> · <strong>Agent:</strong> James McAllister · <strong>Officers:</strong> General Partner: James McAllister, Limited Partner: Southeast Capital LLC</div>
+            </div>
+
+            <div class="profile-section">
+                <div class="section-label">📋 Permit History</div>
+                <div class="section-content"><strong>Last Roof:</strong> 09/22/2013 (12.5yr ago) · <strong>Total Permits:</strong> 2</div>
+            </div>
+
+            <div class="profile-section"><div class="section-label">📞 Contact</div><div class="section-content"><a href="tel:(863) 555-0156" class="contact-link">📞 (863) 555-0156</a> <a href="https://maps.google.com/?cid=example3" target="_blank" class="contact-link">📍 Google Maps</a></div></div>
+        </div>
+
+        <div class="issues-section"><button class="toggle-issues" onclick="toggleIssues(this)">▼ Show 3 Flagged Review(s)</button><div class="issues-list" style="display:none;">
+                <div class="issue-item" data-category="Roofing & Water Intrusion">
+                    <div class="issue-header">
+                        <span class="issue-category">🏚️ Roofing & Water Intrusion</span>
+                        <span class="issue-severity">Severity: 9.0</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★☆☆☆☆</span>
+                        <span class="review-author">Jennifer S.</span>
+                        <span class="review-time">2 weeks ago</span>
+                    </div>
+                    <p class="issue-excerpt">"Roof is completely shot on buildings 3 and 5. They've had tarps up for 8 months with no repair"</p>
+                </div>
+            
+                <div class="issue-item" data-category="Mold & Moisture">
+                    <div class="issue-header">
+                        <span class="issue-category">🦠 Mold & Moisture</span>
+                        <span class="issue-severity">Severity: 6.0</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★☆☆☆☆</span>
+                        <span class="review-author">Sarah L.</span>
+                        <span class="review-time">3 weeks ago</span>
+                    </div>
+                    <p class="issue-excerpt">"Mold growing on the outside of the buildings and inside our unit from all the moisture"</p>
+                </div>
+            
+                <div class="issue-item" data-category="Parking & Paving">
+                    <div class="issue-header">
+                        <span class="issue-category">🅿️ Parking & Paving</span>
+                        <span class="issue-severity">Severity: 4.8</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★★☆☆☆</span>
+                        <span class="review-author">Brandon T.</span>
+                        <span class="review-time">1 month ago</span>
+                    </div>
+                    <p class="issue-excerpt">"Parking lot is destroyed — potholes everywhere. Asphalt hasn't been resurfaced in years"</p>
+                </div>
+            </div></div>
+    </div>
+    
+    <div class="lead-card priority-hot" data-score="60.8" data-rating="2.5" data-priority="hot" data-county="Volusia" data-units="176" data-age="39">
+        <div class="lead-header">
+            <div class="lead-title-section">
+                <div class="lead-name-row">
+                    <h3 class="lead-name">Harbour Isle at Deltona</h3>
+                    <span class="priority-badge priority-hot">🔥 HOT</span>
+                </div>
+                <p class="lead-address">850 Deltona Blvd, Deltona, FL 32725 · Volusia County</p>
+                <p class="lead-rating"><span class="rating-display">★★½☆☆</span> 2.5/5 (189 reviews)</p>
+            </div>
+            <div class="lead-score-section">
+                <div class="lead-score">60.8</div>
+                <div class="lead-score-label">LEAD SCORE</div>
+                <div class="score-bar"><div class="score-segment" style="flex:24.8;background:#ef4444" title="Reviews: 24.8"></div><div class="score-segment" style="flex:15.0;background:#f59e0b" title="Permits: 15.0"></div><div class="score-segment" style="flex:7;background:#8b5cf6" title="Age: 7"></div><div class="score-segment" style="flex:6;background:#3b82f6" title="Size: 6"></div><div class="score-segment" style="flex:8.0;background:#00d084" title="Reach: 8.0"></div></div>
+            </div>
+        </div>
+
+        <div class="profile-sections">
+            <div class="profile-section">
+                <div class="section-label">🏢 Property Details</div>
+                <div class="section-content"><strong>Built:</strong> 1987 (39 yrs old) · <strong>Units:</strong> 176 · <strong>Buildings:</strong> 9 · <strong>Sq Ft:</strong> 152,000 · <strong>Assessed:</strong> $10,100,000</div>
+            </div>
+
+            <div class="profile-section">
+                <div class="section-label">👤 Owner / Management</div>
+                <div class="section-content"><strong>Owner:</strong> HARBOUR ISLE PROPERTY MANAGEMENT INC · <span style="color:#00d084">(Active)</span> · <strong>Agent:</strong> William Harbour · <strong>Officers:</strong> President: William Harbour, VP: Sandra Harbour</div>
+            </div>
+
+            <div class="profile-section">
+                <div class="section-label">📋 Permit History</div>
+                <div class="section-content"><strong>Last Roof:</strong> 02/18/2007 (19.1yr ago) 🔴 · <strong>Total Permits:</strong> 1</div>
+            </div>
+
+            <div class="profile-section"><div class="section-label">📞 Contact</div><div class="section-content"><a href="tel:(386) 555-0167" class="contact-link">📞 (386) 555-0167</a> <a href="https://maps.google.com/?cid=example8" target="_blank" class="contact-link">📍 Google Maps</a></div></div>
+        </div>
+
+        <div class="issues-section"><button class="toggle-issues" onclick="toggleIssues(this)">▼ Show 2 Flagged Review(s)</button><div class="issues-list" style="display:none;">
+                <div class="issue-item" data-category="Roofing & Water Intrusion">
+                    <div class="issue-header">
+                        <span class="issue-category">🏚️ Roofing & Water Intrusion</span>
+                        <span class="issue-severity">Severity: 7.5</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★☆☆☆☆</span>
+                        <span class="review-author">Brenda F.</span>
+                        <span class="review-time">3 weeks ago</span>
+                    </div>
+                    <p class="issue-excerpt">"ROOF IS LEAKING IN 6 UNITS. Water damage everywhere. Tarps and nothing else"</p>
+                </div>
+            
+                <div class="issue-item" data-category="General Exterior Neglect">
+                    <div class="issue-header">
+                        <span class="issue-category">⚠️ General Exterior Neglect</span>
+                        <span class="issue-severity">Severity: 6.6</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★☆☆☆☆</span>
+                        <span class="review-author">Travis W.</span>
+                        <span class="review-time">1 month ago</span>
+                    </div>
+                    <p class="issue-excerpt">"Falling apart, management refuses to fix anything. Multiple code violations"</p>
+                </div>
+            </div></div>
+    </div>
+    
+    <div class="lead-card priority-warm" data-score="45.3" data-rating="2.9" data-priority="warm" data-county="Volusia" data-units="210" data-age="32">
+        <div class="lead-header">
+            <div class="lead-title-section">
+                <div class="lead-name-row">
+                    <h3 class="lead-name">Sandpiper Village</h3>
+                    <span class="priority-badge priority-warm">🟡 WARM</span>
+                </div>
+                <p class="lead-address">2450 W International Speedway Blvd, Daytona Beach, FL 32114 · Volusia County</p>
+                <p class="lead-rating"><span class="rating-display">★★½☆☆</span> 2.9/5 (234 reviews)</p>
+            </div>
+            <div class="lead-score-section">
+                <div class="lead-score">45.3</div>
+                <div class="lead-score-label">LEAD SCORE</div>
+                <div class="score-bar"><div class="score-segment" style="flex:17.3;background:#ef4444" title="Reviews: 17.3"></div><div class="score-segment" style="flex:8.0;background:#f59e0b" title="Permits: 8.0"></div><div class="score-segment" style="flex:7;background:#8b5cf6" title="Age: 7"></div><div class="score-segment" style="flex:8;background:#3b82f6" title="Size: 8"></div><div class="score-segment" style="flex:5.0;background:#00d084" title="Reach: 5.0"></div></div>
+            </div>
+        </div>
+
+        <div class="profile-sections">
+            <div class="profile-section">
+                <div class="section-label">🏢 Property Details</div>
+                <div class="section-content"><strong>Built:</strong> 1994 (32 yrs old) · <strong>Units:</strong> 210 · <strong>Buildings:</strong> 11 · <strong>Sq Ft:</strong> 185,000 · <strong>Assessed:</strong> $13,100,000</div>
+            </div>
+
+            <div class="profile-section">
+                <div class="section-label">👤 Owner / Management</div>
+                <div class="section-content"><strong>Owner:</strong> SANDPIPER VILLAGE INVESTORS LLC</div>
+            </div>
+
+            <div class="profile-section">
+                <div class="section-label">📋 Permit History</div>
+                <div class="section-content"><strong>Last Roof:</strong> 04/05/2012 (14.0yr ago) · <strong>Last Paint:</strong> 01/20/2020 (6.2yr ago) · <strong>Total Permits:</strong> 2</div>
+            </div>
+
+            <div class="profile-section"><div class="section-label">📞 Contact</div><div class="section-content"><a href="tel:(386) 555-0134" class="contact-link">📞 (386) 555-0134</a> <a href="https://maps.google.com/?cid=example6" target="_blank" class="contact-link">📍 Google Maps</a></div></div>
+        </div>
+
+        <div class="issues-section"><button class="toggle-issues" onclick="toggleIssues(this)">▼ Show 2 Flagged Review(s)</button><div class="issues-list" style="display:none;">
+                <div class="issue-item" data-category="Roofing & Water Intrusion">
+                    <div class="issue-header">
+                        <span class="issue-category">🏚️ Roofing & Water Intrusion</span>
+                        <span class="issue-severity">Severity: 7.5</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★☆☆☆☆</span>
+                        <span class="review-author">Crystal A.</span>
+                        <span class="review-time">1 month ago</span>
+                    </div>
+                    <p class="issue-excerpt">"Building 8 roof has been leaking for over a year. Water damage visible from outside"</p>
+                </div>
+            
+                <div class="issue-item" data-category="Parking & Paving">
+                    <div class="issue-header">
+                        <span class="issue-category">🅿️ Parking & Paving</span>
+                        <span class="issue-severity">Severity: 3.2</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★★☆☆☆</span>
+                        <span class="review-author">Stephanie V.</span>
+                        <span class="review-time">2 months ago</span>
+                    </div>
+                    <p class="issue-excerpt">"Parking lot is a disaster. Potholes big enough to lose a tire in"</p>
+                </div>
+            </div></div>
+    </div>
+    
+    <div class="lead-card priority-warm" data-score="35.0" data-rating="3.2" data-priority="warm" data-county="Lake" data-units="120" data-age="25">
+        <div class="lead-header">
+            <div class="lead-title-section">
+                <div class="lead-name-row">
+                    <h3 class="lead-name">The Groves at Clermont</h3>
+                    <span class="priority-badge priority-warm">🟡 WARM</span>
+                </div>
+                <p class="lead-address">1100 Hooks St, Clermont, FL 34711 · Lake County</p>
+                <p class="lead-rating"><span class="rating-display">★★★☆☆</span> 3.2/5 (145 reviews)</p>
+            </div>
+            <div class="lead-score-section">
+                <div class="lead-score">35.0</div>
+                <div class="lead-score-label">LEAD SCORE</div>
+                <div class="score-bar"><div class="score-segment" style="flex:15.0;background:#ef4444" title="Reviews: 15.0"></div><div class="score-segment" style="flex:5.0;background:#f59e0b" title="Permits: 5.0"></div><div class="score-segment" style="flex:4;background:#8b5cf6" title="Age: 4"></div><div class="score-segment" style="flex:6;background:#3b82f6" title="Size: 6"></div><div class="score-segment" style="flex:5.0;background:#00d084" title="Reach: 5.0"></div></div>
+            </div>
+        </div>
+
+        <div class="profile-sections">
+            <div class="profile-section">
+                <div class="section-label">🏢 Property Details</div>
+                <div class="section-content"><strong>Built:</strong> 2001 (25 yrs old) · <strong>Units:</strong> 120 · <strong>Buildings:</strong> 6 · <strong>Sq Ft:</strong> 108,000 · <strong>Assessed:</strong> $9,400,000</div>
+            </div>
+
+            <div class="profile-section">
+                <div class="section-label">👤 Owner / Management</div>
+                <div class="section-content"><strong>Owner:</strong> CLERMONT GROVES APARTMENTS LP</div>
+            </div>
+
+            <div class="profile-section">
+                <div class="section-label">📋 Permit History</div>
+                <div class="section-content"><strong>Last Roof:</strong> 10/12/2015 (10.5yr ago) · <strong>Last Paint:</strong> 06/30/2021 (4.8yr ago) · <strong>Total Permits:</strong> 2</div>
+            </div>
+
+            <div class="profile-section"><div class="section-label">📞 Contact</div><div class="section-content"><a href="tel:(352) 555-0145" class="contact-link">📞 (352) 555-0145</a> <a href="https://maps.google.com/?cid=example7" target="_blank" class="contact-link">📍 Google Maps</a></div></div>
+        </div>
+
+        <div class="issues-section"><button class="toggle-issues" onclick="toggleIssues(this)">▼ Show 2 Flagged Review(s)</button><div class="issues-list" style="display:none;">
+                <div class="issue-item" data-category="Roofing & Water Intrusion">
+                    <div class="issue-header">
+                        <span class="issue-category">🏚️ Roofing & Water Intrusion</span>
+                        <span class="issue-severity">Severity: 6.0</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★★☆☆☆</span>
+                        <span class="review-author">Michelle R.</span>
+                        <span class="review-time">1 month ago</span>
+                    </div>
+                    <p class="issue-excerpt">"Roof leak in our unit getting worse every storm. Water stains all over"</p>
+                </div>
+            
+                <div class="issue-item" data-category="Siding & Stucco">
+                    <div class="issue-header">
+                        <span class="issue-category">🧱 Siding & Stucco</span>
+                        <span class="issue-severity">Severity: 4.0</span>
+                    </div>
+                    <div class="issue-review">
+                        <span class="review-stars">★★☆☆☆</span>
+                        <span class="review-author">Danny L.</span>
+                        <span class="review-time">5 weeks ago</span>
+                    </div>
+                    <p class="issue-excerpt">"Exterior stucco cracking and peeling. Wood rot on the stairway railings"</p>
+                </div>
+            </div></div>
+    </div>
+    
+</div>
+
+<script>
+
+let activePriority = 'all';
+
+function filterLeads() {
+    const search = document.querySelector('.search-box').value.toLowerCase();
+    const cards = document.querySelectorAll('.lead-card');
+    cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        const priority = card.dataset.priority;
+        const matchesSearch = !search || text.includes(search);
+        const matchesPriority = activePriority === 'all' || priority === activePriority;
+        card.style.display = (matchesSearch && matchesPriority) ? 'block' : 'none';
     });
+}
 
-    filteredCards.sort((a, b) => {
-        switch(sortBy) {
-            case 'score-desc':
-                return parseFloat(b.getAttribute('data-score')) - parseFloat(a.getAttribute('data-score'));
-            case 'score-asc':
-                return parseFloat(a.getAttribute('data-score')) - parseFloat(b.getAttribute('data-score'));
-            case 'name':
-                return a.getAttribute('data-name').localeCompare(b.getAttribute('data-name'));
-            default:
-                return 0;
+function filterPriority(value) {
+    activePriority = value;
+    filterLeads();
+}
+
+function sortLeads(criterion) {
+    const container = document.getElementById('leadsContainer');
+    const cards = Array.from(container.querySelectorAll('.lead-card'));
+    cards.sort((a, b) => {
+        switch(criterion) {
+            case 'score-desc': return parseFloat(b.dataset.score) - parseFloat(a.dataset.score);
+            case 'score-asc': return parseFloat(a.dataset.score) - parseFloat(b.dataset.score);
+            case 'rating-asc': return parseFloat(a.dataset.rating) - parseFloat(b.dataset.rating);
+            case 'age-desc': return parseInt(b.dataset.age) - parseInt(a.dataset.age);
+            case 'units-desc': return parseInt(b.dataset.units) - parseInt(a.dataset.units);
         }
     });
+    cards.forEach(card => container.appendChild(card));
+}
 
-    const container = document.querySelector('.container');
-    container.innerHTML = '';
-    filteredCards.forEach(card => container.appendChild(card.cloneNode(true)));
-
-    if (filteredCards.length === 0) {
-        container.innerHTML = '<div class="empty-state"><h2>No properties found</h2><p>Try adjusting your search or filter criteria</p></div>';
+function toggleIssues(btn) {
+    const list = btn.nextElementSibling;
+    if (list.style.display === 'none') {
+        list.style.display = 'block';
+        btn.textContent = btn.textContent.replace('▼ Show', '▲ Hide');
+    } else {
+        list.style.display = 'none';
+        btn.textContent = btn.textContent.replace('▲ Hide', '▼ Show');
     }
 }
 
-searchInput.addEventListener('input', applyFiltersAndSort);
-sortSelect.addEventListener('change', applyFiltersAndSort);
-filterSelect.addEventListener('change', applyFiltersAndSort);
-    </script>
+</script>
+
 </body>
 </html>
